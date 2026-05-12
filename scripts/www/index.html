@@ -72,7 +72,7 @@
                 @apply flex items-center justify-center w-12 h-12 rounded-full bg-primary text-dark shadow-lg hover:bg-opacity-90 hover:scale-110 transition-all duration-300 border-2 border-secondary;
             }
             .panel {
-                @apply bg-light bg-opacity-90 rounded-lg shadow-xl border-2 border-secondary p-4;
+                @apply bg-light rounded-lg shadow-xl border-2 border-secondary p-4;
             }
             .scrollbar-thin {
                 scrollbar-width: thin;
@@ -86,6 +86,9 @@
             .scrollbar-thin::-webkit-scrollbar-thumb {
                 background-color: #8B4513;
                 border-radius: 20px;
+            }
+            #game-main-page.info-expanded .pt-32 {
+                padding-top: 16rem;
             }
         }
     </style>
@@ -345,7 +348,7 @@
             </div>
             
             <!-- 顶部按钮栏 -->
-                <div class="flex justify-between">
+                <div class="flex justify-between mt-1 md:mt-2">
                     <!-- 左侧按钮 -->
                     <div class="flex gap-1 md:gap-2">
                         <button id="btn-game-info" class="btn-icon flex items-center gap-1">
@@ -412,7 +415,7 @@
 
         <!-- 农田页面 -->
         <div id="farmland-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">农田管理</h2>
                     <button id="btn-back-from-farmland" class="btn-secondary">
@@ -427,24 +430,24 @@
                     <p class="mb-4">仆人负责土地: <span id="servant-farmland" class="font-bold">0</span> 亩</p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <button id="btn-plow" class="btn-game flex flex-col items-center justify-center h-32" disabled>
-                        <span>耕种</span>
-                        <span class="text-xs mt-1">(2月可用)</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-[18px]">
+                    <button id="btn-plow" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto" disabled>
+                        <span class="text-base">耕种</span>
+                        <span class="text-xs mt-0.5">(2月可用)</span>
                     </button>
-                    <button id="btn-dispatch-servant" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>派遣仆人</span>
-                        <span class="text-xs mt-1">(每人20亩)</span>
+                    <button id="btn-dispatch-servant" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">派遣仆人</span>
+                        <span class="text-xs mt-0.5">(每人20亩)</span>
                     </button>
-                    <button id="btn-harvest" class="btn-game flex flex-col items-center justify-center h-32" disabled>
-                        <span>收获</span>
-                        <span class="text-xs mt-1">(9月可用)</span>
+                    <button id="btn-harvest" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto" disabled>
+                        <span class="text-base">收获</span>
+                        <span class="text-xs mt-0.5">(9月可用)</span>
                     </button>
                 </div>
                 
                 <div class="mt-6">
                     <h3 class="text-xl font-bold mb-2">农田状态</h3>
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <p id="farmland-status" class="text-center">农田当前处于休耕状态。</p>
                     </div>
                 </div>
@@ -464,7 +467,7 @@
 
         <!-- 庄园页面 -->
         <div id="manor-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">庄园管理</h2>
                     <button id="btn-back-from-manor" class="btn-secondary">
@@ -490,32 +493,32 @@
                     <p class="mb-4">仆人每月消耗粮食: <span id="servants-food-cost" class="font-bold">0</span></p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <button id="btn-recruit-soldiers" class="btn-game flex flex-col items-center justify-center h-24">
-                        <span>招募私兵</span>
-                        <span class="text-xs mt-1">(每人5石粮)</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-[18px]">
+                    <button id="btn-recruit-soldiers" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto">
+                        <span class="text-base">招募私兵</span>
+                        <span class="text-xs mt-0.5">(每人5石粮)</span>
                     </button>
-                    <button id="btn-dismiss-soldiers" class="btn-game flex flex-col items-center justify-center h-24">
-                        <span>遣散私兵</span>
-                        <span class="text-xs mt-1">(减少私兵数量)</span>
+                    <button id="btn-dismiss-soldiers" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto">
+                        <span class="text-base">遣散私兵</span>
+                        <span class="text-xs mt-0.5">(减少私兵数量)</span>
                     </button>
-                    <button id="btn-recruit-servant" class="btn-game flex flex-col items-center justify-center h-24">
-                        <span>招募仆人</span>
-                        <span class="text-xs mt-1">(每人5石粮)</span>
+                    <button id="btn-recruit-servant" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto">
+                        <span class="text-base">招募仆人</span>
+                        <span class="text-xs mt-0.5">(每人5石粮)</span>
                     </button>
-                    <button id="btn-dismiss-servant" class="btn-game flex flex-col items-center justify-center h-24">
-                        <span>遣散仆人</span>
-                        <span class="text-xs mt-1">(减少仆人数量)</span>
+                    <button id="btn-dismiss-servant" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto">
+                        <span class="text-base">遣散仆人</span>
+                        <span class="text-xs mt-0.5">(减少仆人数量)</span>
                     </button>
-                    <button id="btn-appoint-commander" class="btn-game flex flex-col items-center justify-center h-24">
-                        <span>任命统领</span>
-                        <span class="text-xs mt-1">(从家族成员中选)</span>
+                    <button id="btn-appoint-commander" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto">
+                        <span class="text-base">任命统领</span>
+                        <span class="text-xs mt-0.5">(从家族成员中选)</span>
                     </button>
                 </div>
                 
                 <div class="mt-6">
                     <h3 class="text-xl font-bold mb-2">私兵状态</h3>
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <p id="soldiers-status" class="text-center">您还没有招募任何私兵，他们可以保护您的家族安全。</p>
                     </div>
                 </div>
@@ -524,7 +527,7 @@
 
         <!-- 家宅页面 -->
         <div id="family-house-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">家宅管理</h2>
                     <button id="btn-back-from-family-house" class="btn-secondary">
@@ -537,18 +540,18 @@
                     <p class="mb-4">家族声望: <span id="family-house-reputation" class="font-bold">0</span></p>
                 </div>
                 
-                <div class="grid grid-cols-1 gap-4">
-                    <button id="btn-ancestral-hall" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>祠堂</span>
-                        <span class="text-xs mt-1">(祭祖、家谱)</span>
+                <div class="grid grid-cols-1 gap-[18px]">
+                    <button id="btn-ancestral-hall" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">祠堂</span>
+                        <span class="text-xs mt-0.5">(祭祖、家谱)</span>
                     </button>
-                    <button id="btn-family-school" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>族学</span>
-                        <span class="text-xs mt-1">(求学、教学)</span>
+                    <button id="btn-family-school" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">族学</span>
+                        <span class="text-xs mt-0.5">(求学、教学)</span>
                     </button>
-                    <button id="btn-guest-house" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>客馆</span>
-                        <span class="text-xs mt-1">(延请先生)</span>
+                    <button id="btn-guest-house" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">客馆</span>
+                        <span class="text-xs mt-0.5">(延请先生)</span>
                     </button>
                 </div>
             </div>
@@ -556,7 +559,7 @@
 
         <!-- 祠堂页面 -->
         <div id="ancestral-hall-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">祠堂</h2>
                     <button id="btn-back-from-ancestral-hall" class="btn-secondary">
@@ -569,14 +572,14 @@
                     <p class="mb-4">祭祖效果: 当年新生儿四维属性 +1%-10%</p>
                 </div>
                 
-                <div class="grid grid-cols-1 gap-4">
-                    <button id="btn-worship-ancestors" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>祭祖</span>
-                        <span id="worship-cost" class="text-xs mt-1">(消耗 100两 + 10石粮)</span>
+                <div class="grid grid-cols-1 gap-[18px]">
+                    <button id="btn-worship-ancestors" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">祭祖</span>
+                        <span id="worship-cost" class="text-xs mt-0.5">(消耗 100两 + 10石粮)</span>
                     </button>
-                    <button id="btn-view-family-tree" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>家谱</span>
-                        <span class="text-xs mt-1">(查看家族成员)</span>
+                    <button id="btn-view-family-tree" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">家谱</span>
+                        <span class="text-xs mt-0.5">(查看家族成员)</span>
                     </button>
                 </div>
             </div>
@@ -584,7 +587,7 @@
 
         <!-- 家谱页面 -->
         <div id="family-tree-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-thin animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg max-h-[85vh] overflow-y-auto scrollbar-thin animate-slide-up">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">家谱</h2>
                     <button id="btn-back-from-family-tree" class="btn-secondary">
@@ -603,7 +606,7 @@
 
         <!-- 族学页面 -->
         <div id="family-school-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">族学</h2>
                     <button id="btn-back-from-family-school" class="btn-secondary">
@@ -615,7 +618,7 @@
                     <p class="mb-2">求学弟子: <span id="school-students-count" class="font-bold">0</span> 人</p>
                 </div>
                 
-                <div class="mb-6 p-4 bg-light bg-opacity-50 rounded-lg border border-secondary">
+                <div class="mb-6 p-4 bg-light rounded-lg border border-secondary">
                     <h3 class="text-lg font-bold mb-3">年度属性增幅</h3>
                     <div class="grid grid-cols-2 gap-3">
                         <div class="flex justify-between">
@@ -649,18 +652,18 @@
                     </div>
                 </div>
                 
-                <div class="grid grid-cols-1 gap-4">
-                    <button id="btn-arrange-study" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>安排求学</span>
-                        <span class="text-xs mt-1">(选择家族子弟)</span>
+                <div class="grid grid-cols-1 gap-[18px]">
+                    <button id="btn-arrange-study" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">安排求学</span>
+                        <span class="text-xs mt-0.5">(选择家族子弟)</span>
                     </button>
-                    <button id="btn-arrange-teaching" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>安排教学</span>
-                        <span class="text-xs mt-1">(安排先生任教)</span>
+                    <button id="btn-arrange-teaching" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">安排教学</span>
+                        <span class="text-xs mt-0.5">(安排先生任教)</span>
                     </button>
-                    <button id="btn-view-student-info" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>求学信息</span>
-                        <span class="text-xs mt-1">(查看求学人员)</span>
+                    <button id="btn-view-student-info" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">求学信息</span>
+                        <span class="text-xs mt-0.5">(查看求学人员)</span>
                     </button>
                 </div>
             </div>
@@ -668,7 +671,7 @@
 
         <!-- 客馆页面 -->
         <div id="guest-house-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">客馆</h2>
                     <button id="btn-back-from-guest-house" class="btn-secondary">
@@ -691,7 +694,7 @@
         
         <!-- 姻缘签页面 -->
         <div id="marriage-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">姻缘签</h2>
                     <button id="btn-back-from-marriage" class="btn-secondary">
@@ -714,7 +717,7 @@
 
         <!-- 产业页面 -->
         <div id="industry-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">产业管理</h2>
                     <button id="btn-back-from-industry" class="btn-secondary">
@@ -728,18 +731,18 @@
                     <p class="mb-4">牧场规模: <span id="ranch-size" class="font-bold">0</span> 头</p>
                 </div>
                 
-                <div class="grid grid-cols-1 gap-4">
-                    <button id="btn-caravan" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>商队</span>
-                        <span class="text-xs mt-1">(贸易经商)</span>
+                <div class="grid grid-cols-1 gap-[18px]">
+                    <button id="btn-caravan" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">商队</span>
+                        <span class="text-xs mt-0.5">(贸易经商)</span>
                     </button>
-                    <button id="btn-workshop" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>工坊</span>
-                        <span class="text-xs mt-1">(生产特产)</span>
+                    <button id="btn-workshop" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">工坊</span>
+                        <span class="text-xs mt-0.5">(生产特产)</span>
                     </button>
-                    <button id="btn-ranch" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>牧场</span>
-                        <span class="text-xs mt-1">(养马养牛)</span>
+                    <button id="btn-ranch" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">牧场</span>
+                        <span class="text-xs mt-0.5">(养马养牛)</span>
                     </button>
                 </div>
             </div>
@@ -747,7 +750,7 @@
 
         <!-- 商队页面 -->
         <div id="caravan-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-3xl animate-slide-up">
+            <div class="panel w-[85vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">商队管理</h2>
                     <button id="btn-back-from-caravan" class="btn-secondary">
@@ -762,7 +765,7 @@
                     </div>
                 </div>
                 
-                <button id="btn-create-caravan" class="btn-game w-full mt-4">
+                <button id="btn-create-caravan" class="btn-game w-[70%] mx-auto mt-4">
                     创建商队
                 </button>
                 
@@ -784,7 +787,7 @@
 
         <!-- 工坊页面 -->
         <div id="workshop-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-3xl animate-slide-up">
+            <div class="panel w-[85vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">工坊管理</h2>
                     <button id="btn-back-from-workshop" class="btn-secondary">
@@ -808,7 +811,7 @@
                 </div>
 
                 <div class="mt-4">
-                    <button id="btn-dispatch-workshop-servant" class="btn-game w-full py-3">
+                    <button id="btn-dispatch-workshop-servant" class="btn-game w-[70%] mx-auto py-3">
                         派遣仆从
                     </button>
                 </div>
@@ -817,7 +820,7 @@
 
         <!-- 拉拢山贼页面 -->
         <div id="bandit-recruit-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-xl animate-slide-up">
+            <div class="panel w-[75vw] max-w-xs md:max-w-sm lg:max-w-md animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">拉拢山贼</h2>
                     <button onclick="showPage('local-page')" class="btn-secondary">
@@ -833,7 +836,7 @@
 
         <!-- 派遣仆从到工坊页面 -->
         <div id="workshop-servant-dispatch-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-3xl animate-slide-up">
+            <div class="panel w-[85vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">派遣仆从</h2>
                     <button id="btn-back-from-workshop-servant" class="btn-secondary">
@@ -864,7 +867,7 @@
 
         <!-- 牧场页面 -->
         <div id="ranch-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-3xl animate-slide-up">
+            <div class="panel w-[85vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">牧场管理</h2>
                     <button id="btn-back-from-ranch" class="btn-secondary">
@@ -879,36 +882,36 @@
                     <p class="mb-4">皮革库存: <span id="leather-count" class="font-bold">0</span></p>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <button id="btn-breed-horse" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>养马</span>
-                        <span class="text-xs mt-1">(产出战马)</span>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-[18px]">
+                    <button id="btn-breed-horse" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">养马</span>
+                        <span class="text-xs mt-0.5">(产出战马)</span>
                     </button>
-                    <button id="btn-breed-cow" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>养牛</span>
-                        <span class="text-xs mt-1">(产出皮革)</span>
+                    <button id="btn-breed-cow" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">养牛</span>
+                        <span class="text-xs mt-0.5">(产出皮革)</span>
                     </button>
-                    <button id="btn-equip-warhorse" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>配备战马</span>
-                        <span class="text-xs mt-1">(提高战力下限)</span>
+                    <button id="btn-equip-warhorse" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">配备战马</span>
+                        <span class="text-xs mt-0.5">(提高战力下限)</span>
                     </button>
-                    <button id="btn-equip-armor" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>制造甲胄</span>
-                        <span class="text-xs mt-1">(提高战力下限)</span>
+                    <button id="btn-equip-armor" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">制造甲胄</span>
+                        <span class="text-xs mt-0.5">(提高战力下限)</span>
                     </button>
-                    <button id="btn-equip-cow-farm" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>配备耕牛</span>
-                        <span class="text-xs mt-1">(提高农业产量)</span>
+                    <button id="btn-equip-cow-farm" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">配备耕牛</span>
+                        <span class="text-xs mt-0.5">(提高农业产量)</span>
                     </button>
-                    <button id="btn-sell-ranch-goods" class="btn-game flex flex-col items-center justify-center h-32">
-                        <span>出售商品</span>
-                        <span class="text-xs mt-1">(通过商队)</span>
+                    <button id="btn-sell-ranch-goods" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">出售商品</span>
+                        <span class="text-xs mt-0.5">(通过商队)</span>
                     </button>
                 </div>
                 
                 <div class="mt-4">
                     <h3 class="text-xl font-bold mb-2">牧场状态</h3>
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <p id="ranch-status" class="text-center">牧场还没有任何牲畜</p>
                     </div>
                 </div>
@@ -917,7 +920,7 @@
 
         <!-- 城门页面 -->
         <div id="city-gate-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[85vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-primary">城门</h2>
                     <button id="btn-back-from-city-gate" class="btn-secondary">
@@ -925,14 +928,14 @@
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-1 gap-6">
-                    <button id="btn-local" class="btn-game flex flex-col items-center justify-center h-40">
-                        <span class="text-xl">本地</span>
-                        <span class="text-sm mt-1">查看本地区动态</span>
+                <div class="grid grid-cols-1 gap-[18px] p-6">
+                    <button id="btn-local" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">本地</span>
+                        <span class="text-xs mt-0.5">查看本地区动态</span>
                     </button>
-                    <button id="btn-world" class="btn-game flex flex-col items-center justify-center h-40">
-                        <span class="text-xl">天下</span>
-                        <span class="text-sm mt-1">查看历史事件</span>
+                    <button id="btn-world" class="btn-game flex flex-col items-center justify-center h-14 w-[70%] mx-auto">
+                        <span class="text-base">天下</span>
+                        <span class="text-xs mt-0.5">查看历史事件</span>
                     </button>
                 </div>
             </div>
@@ -940,7 +943,7 @@
 
         <!-- 本地页面 -->
         <div id="local-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up max-h-[90vh] overflow-y-auto scrollbar-thin">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-primary">本地</h2>
                     <button id="btn-back-from-local" class="btn-secondary">
@@ -959,7 +962,7 @@
 
         <!-- 天下页面 -->
         <div id="world-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-3xl animate-slide-up max-h-[90vh] overflow-y-auto scrollbar-thin">
+            <div class="panel w-[85vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-primary">天下</h2>
                     <button id="btn-back-from-world" class="btn-secondary">
@@ -978,7 +981,7 @@
 
         <!-- 市肆页面 -->
         <div id="market-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-2xl animate-slide-up">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">市肆交易</h2>
                     <button id="btn-back-from-market" class="btn-secondary">
@@ -994,7 +997,7 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <!-- 粮食购买 -->
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <h3 class="text-xl font-bold mb-2">购买粮食</h3>
                         <div class="mb-4">
                             <label for="buy-money" class="block mb-1">支付银两:</label>
@@ -1011,11 +1014,11 @@
                             </div>
                         </div>
                         <p class="mb-2">可购买: <span id="buy-food-amount" class="font-bold">0</span> 石 <span id="buy-food-jin" class="font-bold">0</span> 斤</p>
-                        <button id="btn-buy-food" class="btn-game w-full">购买粮食</button>
+                        <button id="btn-buy-food" class="btn-game w-[70%] mx-auto">购买粮食</button>
                     </div>
                     
                     <!-- 粮食出售 -->
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <h3 class="text-xl font-bold mb-2">出售粮食</h3>
                         <div class="mb-4">
                             <label for="sell-food" class="block mb-1">出售粮食:</label>
@@ -1032,12 +1035,12 @@
                             </div>
                         </div>
                         <p class="mb-2">可获得: <span id="sell-money-amount" class="font-bold">0</span> 两 <span id="sell-cash-amount" class="font-bold">0</span> 文</p>
-                        <button id="btn-sell-food" class="btn-game w-full">出售粮食</button>
+                        <button id="btn-sell-food" class="btn-game w-[70%] mx-auto">出售粮食</button>
                     </div>
                 </div>
                 
                 <!-- 农田买卖 -->
-                <div class="mt-6 bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                <div class="mt-6 bg-light rounded-lg p-4 border border-secondary">
                     <h3 class="text-xl font-bold mb-2">农田买卖</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
@@ -1089,7 +1092,7 @@
                 
                 <div class="space-y-4">
                     <!-- 存档位1（自动存档） -->
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="text-lg font-bold">自动存档</h3>
@@ -1102,7 +1105,7 @@
                     </div>
                     
                     <!-- 存档位2（手动存档1） -->
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="text-lg font-bold">存档位1</h3>
@@ -1120,7 +1123,7 @@
                     </div>
                     
                     <!-- 存档位3（手动存档2） -->
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="text-lg font-bold">存档位2</h3>
@@ -1204,7 +1207,7 @@
 
         <!-- 传家宝页面 -->
         <div id="treasures-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-4xl max-h-[85vh] overflow-y-auto scrollbar-thin animate-slide-up">
+            <div class="panel w-[85vw] max-w-sm md:max-w-md lg:max-w-lg max-h-[85vh] overflow-y-auto scrollbar-thin animate-slide-up">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">传家宝图鉴</h2>
                     <button id="btn-back-from-treasures" class="btn-secondary">
@@ -1217,7 +1220,7 @@
                         <p class="text-lg mb-2">传家宝可以为家族成员带来属性增益，提升家族产业收益。</p>
                         <p class="text-lg">首次获得永久激活属性，重复获得可转化为功德值用于兑换。</p>
                     </div>
-                    <div class="bg-yellow-100 bg-opacity-80 rounded-lg p-3 border border-yellow-300">
+                    <div class="bg-yellow-100 rounded-lg p-3 border border-yellow-300">
                         <p class="font-bold text-yellow-800">功德值: <span id="merit-points-display">0</span></p>
                     </div>
                 </div>
@@ -1288,7 +1291,7 @@
                 
                 <div class="space-y-4" id="titles-container">
                     <!-- 称号将在这里动态生成 -->
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <h3 class="text-lg font-bold">暂无称号</h3>
                         <p class="text-sm text-gray-600">参与历史事件和完成特定目标可以获得称号</p>
                     </div>
@@ -1298,7 +1301,7 @@
 
         <!-- 游戏信息页面 -->
         <div id="game-info-page" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in pointer-events-none">
-            <div class="panel max-w-2xl animate-slide-up pointer-events-auto">
+            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up pointer-events-auto max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">游戏信息</h2>
                     <button id="btn-back-from-game-info" class="btn-secondary">
@@ -1310,7 +1313,7 @@
                     <!-- 左侧：基本信息 -->
                     <div>
                         <h3 class="text-xl font-bold mb-2">基本信息</h3>
-                        <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary space-y-2">
+                        <div class="bg-light rounded-lg p-4 border border-secondary space-y-2">
                             <p><span class="font-bold">姓名:</span> <span id="info-name">未设置</span></p>
                             <p><span class="font-bold">年龄:</span> <span id="info-age">0</span> 岁</p>
                             <p><span class="font-bold">出生地:</span> <span id="info-birthplace">未设置</span></p>
@@ -1320,7 +1323,7 @@
                         </div>
                         
                         <h3 class="text-xl font-bold mt-4 mb-2">家族资源</h3>
-                        <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary space-y-2">
+                        <div class="bg-light rounded-lg p-4 border border-secondary space-y-2">
                             <p><span class="font-bold">金钱:</span> <span id="info-money">500</span> 两</p>
                             <p><span class="font-bold">存粮:</span> <span id="info-food">30</span> 石</p>
                             <p><span class="font-bold">土地:</span> <span id="info-land">10</span> 亩</p>
@@ -1330,7 +1333,7 @@
                     <!-- 右侧：属性 -->
                     <div>
                         <h3 class="text-xl font-bold mb-2">个人属性</h3>
-                        <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary space-y-3">
+                        <div class="bg-light rounded-lg p-4 border border-secondary space-y-3">
                             <div>
                                 <div class="flex justify-between mb-1">
                                     <span class="font-bold">体质:</span>
@@ -1373,7 +1376,7 @@
                         </div>
                         
                         <h3 class="text-xl font-bold mt-4 mb-2">能力</h3>
-                        <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary space-y-2">
+                        <div class="bg-light rounded-lg p-4 border border-secondary space-y-2">
                             <p><span class="font-bold">统帅:</span> <span id="info-leadership">5</span></p>
                             <p><span class="font-bold">武力:</span> <span id="info-force">5</span></p>
                             <p><span class="font-bold">经义:</span> <span id="info-knowledge">5</span></p>
@@ -1828,33 +1831,6 @@
                         dailyRation: 60000,
                         totalFoodNeeded: 4200000,
                         totalFoodShi: 52500
-                    }
-                ]
-            },
-            {
-                id: 18001,
-                year: 180,
-                name: "测试事件",
-                description: "这是一个测试事件，用来演示新的滑动条界面。",
-                regions: ["all"],
-                sides: [
-                    {
-                        name: "测试方A",
-                        troops: 20000,
-                        defaultWinRate: 50,
-                        requiredBoost: 50,
-                        dailyRation: 40000,
-                        totalFoodNeeded: 2000000,
-                        totalFoodShi: 25000
-                    },
-                    {
-                        name: "测试方B",
-                        troops: 25000,
-                        defaultWinRate: 50,
-                        requiredBoost: 50,
-                        dailyRation: 50000,
-                        totalFoodNeeded: 2500000,
-                        totalFoodShi: 31250
                     }
                 ]
             },
@@ -3146,7 +3122,7 @@
                 let listHtml = '';
                 gameState.farmland.farmManagers.forEach((manager, index) => {
                     listHtml += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-2 border border-secondary flex justify-between items-center">
+                        <div class="bg-light rounded-lg p-2 border border-secondary flex justify-between items-center">
                             <div>
                                 <p class="font-bold text-sm">${manager.name}</p>
                                 <p class="text-xs text-gray-600">农艺值: ${manager.farmingAbility} (+${Math.floor(manager.farmingAbility / 10)}%)</p>
@@ -3290,7 +3266,7 @@
                     window.tempMembers[index] = memberForInfo;
                     
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary">
+                        <div class="bg-light rounded-lg p-3 border border-secondary">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <h4 class="font-bold">${member.name}</h4>
@@ -3387,7 +3363,7 @@
                 let html = '';
                 teachers.forEach((teacher, index) => {
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary flex justify-between items-center">
+                        <div class="bg-light rounded-lg p-3 border border-secondary flex justify-between items-center">
                             <div>
                                 <h4 class="font-bold">${teacher.name}</h4>
                                 <p class="text-sm text-gray-600">经义: ${teacher.abilities?.knowledge || 0} | 束脩: ${teacher.hireCost || 50}两/月</p>
@@ -3443,7 +3419,7 @@
                 let html = '';
                 gameState.guestHouse.scholars.forEach((scholar, index) => {
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary flex justify-between items-center">
+                        <div class="bg-light rounded-lg p-3 border border-secondary flex justify-between items-center">
                             <div>
                                 <h4 class="font-bold">${scholar.name}</h4>
                                 <p class="text-sm text-gray-600">武力: ${scholar.abilities?.force || 0} | 经义: ${scholar.abilities?.knowledge || 0}</p>
@@ -3526,17 +3502,17 @@
                     const genderText = npc.gender === 'male' ? '男' : '女';
                     const genderColor = npc.gender === 'male' ? 'text-blue-600' : 'text-pink-600';
                     const actionText = npc.gender === 'male' ? '招赘' : '迎娶';
-                    const actionColor = npc.gender === 'male' ? 'btn-secondary' : 'btn-game';
+                    const actionColor = 'btn-secondary';
                     
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary">
+                        <div class="bg-light rounded-lg p-3 border border-secondary">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <h4 class="font-bold">${npc.name}</h4>
                                     <p class="text-sm ${genderColor}">${genderText} | ${npc.age}岁</p>
                                 </div>
                                 <div class="flex gap-2">
-                                    <button onclick="showCharacterInfo(gameState.marriage.availableNPCs[${index}])" class="btn-secondary py-1 px-2 text-sm">
+                                    <button onclick="showCharacterInfo(gameState.marriage.availableNPCs[${index}])" class="btn-secondary py-1 px-3 text-sm">
                                         信息
                                     </button>
                                     <button onclick="showMarriageSelectModal(${index})" class="${actionColor} py-1 px-3 text-sm">
@@ -3583,7 +3559,7 @@
                     let html = '';
                     eligibleMembers.forEach((member, idx) => {
                         html += `
-                            <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary">
+                            <div class="bg-light rounded-lg p-3 border border-secondary">
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <p class="font-bold">${member.name}</p>
@@ -3613,7 +3589,7 @@
                     let html = '';
                     eligibleMembers.forEach((member, idx) => {
                         html += `
-                            <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary">
+                            <div class="bg-light rounded-lg p-3 border border-secondary">
                                 <div class="flex justify-between items-center">
                                     <div>
                                         <p class="font-bold">${member.name}</p>
@@ -3759,7 +3735,7 @@
                     const moneyHtml = `<span class="text-primary cursor-pointer hover:underline" onclick="showCaravanMoneyModal(${index})">${formatMoney(money)}</span>`;
                     
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary">
+                        <div class="bg-light rounded-lg p-3 border border-secondary">
                             <h4 class="font-bold">商队 ${index + 1}</h4>
                             <p>管事: ${caravan.manager}</p>
                             <p>状态: ${caravanStatus}</p>
@@ -3793,7 +3769,7 @@
             Object.keys(gameState.industry.tradeGoods).forEach(key => {
                 if (gameState.industry.tradeGoods[key] > 0) {
                     goodsHtml += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-2 flex justify-between">
+                        <div class="bg-light rounded-lg p-2 flex justify-between">
                             <span>${goodsNames[key]}</span>
                             <span class="font-bold">${gameState.industry.tradeGoods[key]}</span>
                         </div>
@@ -3807,7 +3783,7 @@
             Object.keys(gameState.industry.regionSpecialties).forEach(region => {
                 const specialties = gameState.industry.regionSpecialties[region].map(s => goodsNames[s]).join(', ');
                 regionHtml += `
-                    <div class="bg-light bg-opacity-50 rounded-lg p-2">
+                    <div class="bg-light rounded-lg p-2">
                         <span class="font-bold">${region}:</span> ${specialties}
                     </div>
                 `;
@@ -3880,7 +3856,7 @@
                     }
 
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3">
+                        <div class="bg-light rounded-lg p-3">
                             <h4 class="font-bold">${workshop.name}</h4>
                             <p>等级: ${level}/5 | 仆从: ${servantsAssigned}人</p>
                             <p>月产量: ${monthlyOutput}</p>
@@ -3927,7 +3903,7 @@
                     const requiredReputation = workshopReputationRequirements[1];
                     const hasEnoughReputation = currentReputation >= requiredReputation;
                     availableHtml += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3 flex justify-between items-center">
+                        <div class="bg-light rounded-lg p-3 flex justify-between items-center">
                             <div>
                                 <h4 class="font-bold">${name}</h4>
                                 <p>产出: ${outputNames} | 花费: ${workshop.cost}两</p>
@@ -4000,7 +3976,7 @@
                     const canRecall = servantsAssigned > 0;
 
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3">
+                        <div class="bg-light rounded-lg p-3">
                             <div class="flex justify-between items-center">
                                 <div>
                                     <h4 class="font-bold">${workshop.name}</h4>
@@ -4175,7 +4151,7 @@
             if (bandits.length > 0) {
                 bandits.forEach((bandit, index) => {
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary mb-3">
+                        <div class="bg-light rounded-lg p-4 border border-secondary mb-3">
                             <h4 class="font-bold text-lg mb-2">${bandit.leaderName}</h4>
                             <p class="mb-1">人数：${bandit.population}人</p>
                             <p class="mb-1">所在地：${bandit.region}</p>
@@ -4205,7 +4181,7 @@
                 });
             } else {
                 html += `
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <p class="text-center text-gray-600">本地区暂无山贼活动</p>
                     </div>
                 `;
@@ -4412,7 +4388,7 @@
                     ${bandit.heirloomName ? `<p><span class="font-bold">携带传家宝：</span>${bandit.heirloomName}</p>` : ''}
                 </div>
                 
-                <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary mb-4">
+                <div class="bg-light rounded-lg p-4 border border-secondary mb-4">
                     <h4 class="font-bold text-lg mb-3">拉拢操作</h4>
                     
                     <div class="mb-4">
@@ -4529,7 +4505,7 @@
                 const maxHorses = 10000; // 100匹马+1幸运值，上限100需要10000
                 
                 html += `
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <h4 class="font-bold text-lg mb-2">${event.name}</h4>
                         <p class="mb-3 text-sm">${event.description}</p>
                         ${hasParticipated ? 
@@ -5191,7 +5167,7 @@
             const playerMoney = gameState.family.money || 0;
             
             const content = `
-                <div class="bg-light bg-opacity-50 rounded-lg p-4">
+                <div class="bg-light rounded-lg p-4">
                     <h4 class="font-bold mb-3">向商队配备资金</h4>
                     <p class="text-sm text-gray-600 mb-2">玩家持有资金: ${formatMoney(playerMoney)}</p>
                     <div class="flex items-center gap-3">
@@ -5202,7 +5178,7 @@
                     <button onclick="addMoneyToCaravan()" class="btn-primary w-full mt-3">确定</button>
                 </div>
                 
-                <div class="bg-light bg-opacity-50 rounded-lg p-4">
+                <div class="bg-light rounded-lg p-4">
                     <h4 class="font-bold mb-3">从商队提取资金</h4>
                     <p class="text-sm text-gray-600 mb-2">商队当前资金: ${formatMoney(caravanMoney)}</p>
                     <div class="flex items-center gap-3">
@@ -5266,7 +5242,7 @@
             const maxHorses = Math.min(servants * 3, availableHorses + horses); // 受仆从数量和仓库马匹限制
             
             const content = `
-                <div class="bg-light bg-opacity-50 rounded-lg p-4">
+                <div class="bg-light rounded-lg p-4">
                     <h4 class="font-bold mb-3">派遣仆从</h4>
                     <p class="text-sm text-gray-600 mb-2">当前仆从: ${servants} 名 (每名仆从增加10容量)</p>
                     <p class="text-sm text-gray-600 mb-2">可派遣空闲仆从: ${availableServants} 名</p>
@@ -5278,7 +5254,7 @@
                     <button onclick="updateCaravanServants()" class="btn-primary w-full mt-3">确定</button>
                 </div>
                 
-                <div class="bg-light bg-opacity-50 rounded-lg p-4">
+                <div class="bg-light rounded-lg p-4">
                     <h4 class="font-bold mb-3">配备马匹</h4>
                     <p class="text-sm text-gray-600 mb-2">当前马匹: ${horses} 匹 (每匹马增加50容量)</p>
                     <p class="text-sm text-gray-600 mb-2">仓库马匹: ${availableHorses} 匹</p>
@@ -5356,7 +5332,7 @@
             }
             
             const content = `
-                <div class="bg-light bg-opacity-50 rounded-lg p-4">
+                <div class="bg-light rounded-lg p-4">
                     <h4 class="font-bold mb-3">${title}</h4>
                     <p class="text-sm text-gray-600 mb-2">当前数量: ${currentCount} 人</p>
                     ${action === 'recruit' ? 
@@ -5529,7 +5505,7 @@
             const warehouseGoods = gameState.industry.tradeGoods || {};
             
             let html = `
-                <div class="bg-blue-100 bg-opacity-50 rounded-lg p-3 mb-4 border border-blue-300">
+                <div class="bg-blue-100 rounded-lg p-3 mb-4 border border-blue-300">
                     <p class="text-sm text-blue-800">商队容量: <span class="font-bold">${currentCargoTotal}</span> / <span class="font-bold">${capacity}</span> 件</p>
                     <p class="text-sm text-blue-600">剩余容量: <span class="font-bold">${capacity - currentCargoTotal}</span> 件</p>
                 </div>
@@ -5547,7 +5523,7 @@
                     const sliderMax = Math.min(caravanCount + remainingCapacity, maxTransfer);
                     
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                        <div class="bg-light rounded-lg p-4 border border-secondary">
                             <div class="flex justify-between items-center mb-2">
                                 <span class="font-bold">${goodsNames[key]}</span>
                                 <span class="text-sm text-gray-600">仓库: ${warehouseCount} | 商队: ${caravanCount}</span>
@@ -5750,7 +5726,7 @@
             const capacity = 100 + servants * 10 + horses * 50;
             
             let html = `
-                <div class="bg-blue-100 bg-opacity-50 rounded-lg p-3 mb-4 border border-blue-300">
+                <div class="bg-blue-100 rounded-lg p-3 mb-4 border border-blue-300">
                     <p class="text-sm text-blue-800">当前地点: <span class="font-bold">${region}</span></p>
                     <p class="text-sm text-blue-800">商队资金: <span class="font-bold">${formatMoney(caravan.money || 0)}</span></p>
                     <p class="text-sm text-blue-800">商队货量: <span class="font-bold">${totalCargo}</span> / <span class="font-bold">${capacity}</span> 件</p>
@@ -5773,7 +5749,7 @@
                 const caravanCount = caravanCargo[key] || 0;
                 
                 html += `
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary cursor-pointer hover:border-primary transition-colors"
+                    <div class="bg-light rounded-lg p-4 border border-secondary cursor-pointer hover:border-primary transition-colors"
                          onclick="showGoodsTradeModal(${index}, '${key}')">
                         <div class="flex justify-between items-center mb-2">
                             <div>
@@ -5867,7 +5843,7 @@
             title.textContent = `${goodsNames[goodsKey]} - 交易`;
             
             content.innerHTML = `
-                <div class="bg-blue-100 bg-opacity-50 rounded-lg p-3 mb-4 border border-blue-300">
+                <div class="bg-blue-100 rounded-lg p-3 mb-4 border border-blue-300">
                     <p class="text-sm text-blue-800">当前地点: <span class="font-bold">${region}</span></p>
                     <p class="text-sm text-blue-800">商队资金: <span class="font-bold">${formatMoney(caravanMoney)}</span></p>
                     <p class="text-sm text-blue-800">货栈存量: <span class="font-bold">${marketCount}</span> 件</p>
@@ -5875,7 +5851,7 @@
                 </div>
                 
                 <!-- 购买区域 -->
-                <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                <div class="bg-light rounded-lg p-4 border border-secondary">
                     <div class="flex justify-between items-center mb-2">
                         <span class="font-bold text-red-600">购买</span>
                         <span class="text-sm">单价: <span class="font-bold">${localBuyPrice}</span>文</span>
@@ -5891,7 +5867,7 @@
                 </div>
                 
                 <!-- 出售区域 -->
-                <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                <div class="bg-light rounded-lg p-4 border border-secondary">
                     <div class="flex justify-between items-center mb-2">
                         <span class="font-bold text-green-600">出售</span>
                         <span class="text-sm">单价: <span class="font-bold">${localSellPrice}</span>文</span>
@@ -7105,15 +7081,15 @@
             const content = document.getElementById('heirloom-detail-content');
             content.innerHTML = `
                 <div class="${tierBgColors[data.tier]} rounded-lg p-4 mb-4">
-                    <p class="text-lg"><span class="font-bold">等级:</span> <span class="${tierTextColors[data.tier]}">${tierNames[data.tier]}级</span></p>
-                    <p class="text-lg"><span class="font-bold">分类:</span> ${categoryNames[data.category] || data.category}</p>
+                    <p class="text-lg" style="color: #000000;"><span class="font-bold">等级:</span> <span>${tierNames[data.tier]}级</span></p>
+                    <p class="text-lg" style="color: #000000;"><span class="font-bold">分类:</span> ${categoryNames[data.category] || data.category}</p>
                 </div>
-                <div class="bg-green-100 bg-opacity-50 rounded-lg p-4 mb-4">
-                    <p class="text-lg mb-2"><span class="font-bold">主属性:</span> ${attrNames[data.attr] || data.attr} +${data.attrBonus}</p>
-                    ${specialText ? `<p class="text-lg"><span class="font-bold">特效:</span> ${specialText}</p>` : ''}
+                <div class="bg-green-100 rounded-lg p-4 mb-4">
+                    <p class="text-lg mb-2" style="color: #000000;"><span class="font-bold">主属性:</span> ${attrNames[data.attr] || data.attr} +${data.attrBonus}</p>
+                    ${specialText ? `<p class="text-lg" style="color: #000000;"><span class="font-bold">特效:</span> ${specialText}</p>` : ''}
                 </div>
-                <div class="bg-gray-100 bg-opacity-50 rounded-lg p-4">
-                    <p class="text-gray-600">简介：暂无</p>
+                <div class="bg-gray-100 rounded-lg p-4">
+                    <p style="color: #000000;">简介：暂无</p>
                 </div>
             `;
             
@@ -7298,23 +7274,23 @@
                 }
                 
                 const card = document.createElement('div');
-                card.className = `bg-light bg-opacity-50 rounded-lg p-4 border-2 ${tierColors[data.tier]} cursor-pointer hover:shadow-lg transition-all ${isOwned ? '' : 'opacity-70'}`;
+                card.className = `bg-primary rounded-lg p-4 border-2 border-secondary cursor-pointer hover:shadow-lg transition-all ${isOwned ? '' : 'opacity-70'}`;
                 card.onclick = () => showHeirloomDetail(id);
                 
                 card.innerHTML = `
                     <div class="flex items-center gap-3 mb-2">
                         <div class="w-12 h-12 ${tierBgColors[data.tier]} rounded-full flex items-center justify-center">
-                            <i class="fa fa-diamond text-xl ${tierTextColors[data.tier]}"></i>
+                            <i class="fa fa-diamond text-xl" style="color: #000000;"></i>
                         </div>
                         <div class="flex-1">
-                            <h3 class="font-bold ${tierTextColors[data.tier]}">${tierNames[data.tier]}级</h3>
-                            <h4 class="text-base font-bold">${data.name}</h4>
+                            <h3 class="font-bold" style="color: #000000;">${tierNames[data.tier]}级</h3>
+                            <h4 class="text-base font-bold" style="color: #000000;">${data.name}</h4>
                         </div>
-                        ${isOwned ? '<span class="text-green-600 text-sm"><i class="fa fa-check-circle"></i> 已拥有</span>' : '<span class="text-gray-400 text-sm"><i class="fa fa-lock"></i> 未拥有</span>'}
+                        ${isOwned ? '<span class="text-sm" style="color: #000000;"><i class="fa fa-check-circle"></i> 已拥有</span>' : '<span class="text-gray-400 text-sm"><i class="fa fa-lock"></i> 未拥有</span>'}
                     </div>
-                    <div class="text-sm space-y-1">
-                        <p><span class="text-gray-600">主属性:</span> ${attrNames[data.attr] || data.attr} +${data.attrBonus}</p>
-                        ${specialText ? `<p><span class="text-gray-600">特效:</span> ${specialText}</p>` : ''}
+                    <div class="text-sm space-y-1" style="color: #000000;">
+                        <p><span>主属性:</span> ${attrNames[data.attr] || data.attr} +${data.attrBonus}</p>
+                        ${specialText ? `<p><span>特效:</span> ${specialText}</p>` : ''}
                     </div>
                 `;
                 
@@ -7337,7 +7313,7 @@
             
             if (gameState.titles.length === 0) {
                 titlesContainer.innerHTML = `
-                    <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
                         <h3 class="text-lg font-bold">暂无称号</h3>
                         <p class="text-sm text-gray-600">参与历史事件和完成特定目标可以获得称号</p>
                     </div>
@@ -7345,7 +7321,7 @@
             } else {
                 gameState.titles.forEach(title => {
                     const titleElement = document.createElement('div');
-                    titleElement.className = 'bg-light bg-opacity-50 rounded-lg p-4 border border-secondary';
+                    titleElement.className = 'bg-light rounded-lg p-4 border border-secondary';
                     titleElement.innerHTML = `
                         <h3 class="text-lg font-bold">${title.name}</h3>
                         <p class="text-sm mb-2">${title.description}</p>
@@ -8118,13 +8094,16 @@
             document.getElementById('toggle-info-window').addEventListener('click', function() {
                 const expandedWindow = document.getElementById('info-window-expanded');
                 const icon = this.querySelector('i');
+                const gameMainPage = document.getElementById('game-main-page');
                 
                 if (expandedWindow.classList.contains('hidden')) {
                     expandedWindow.classList.remove('hidden');
                     icon.className = 'fa fa-chevron-up';
+                    gameMainPage.classList.add('info-expanded');
                 } else {
                     expandedWindow.classList.add('hidden');
                     icon.className = 'fa fa-chevron-down';
+                    gameMainPage.classList.remove('info-expanded');
                 }
             });
             
@@ -8884,7 +8863,7 @@
                     }
                     
                     html += `
-                        <div class="bg-light bg-opacity-50 rounded-lg p-3 border border-secondary flex justify-between items-center ${disabled ? 'opacity-50' : ''}">
+                        <div class="bg-light rounded-lg p-3 border border-secondary flex justify-between items-center ${disabled ? 'opacity-50' : ''}">
                             <div>
                                 <p class="font-bold">${member.name} ${statInfo ? `<span class="text-blue-600">(${statInfo})</span>` : ''}</p>
                                 <p class="text-sm text-gray-600">${member.role || '家族成员'}</p>
@@ -8972,7 +8951,7 @@
                         const attr = member.attributes || {};
                         const abil = member.abilities || {};
                         html += `
-                            <div class="bg-light bg-opacity-50 rounded-lg p-4 border border-secondary">
+                            <div class="bg-light rounded-lg p-4 border border-secondary">
                                 <div class="flex justify-between items-start mb-2">
                                     <h4 class="font-bold text-lg">${member.name}</h4>
                                     <span class="text-sm text-gray-600">${member.role} | ${member.age}岁</span>
@@ -9060,11 +9039,11 @@
             const abilities = memberData.abilities || {};
             
             let html = `
-                <div class="bg-light bg-opacity-50 rounded-lg p-3">
+                <div class="bg-light rounded-lg p-3">
                     <p><span class="font-bold">身份：</span>${memberData.role || '家族成员'}</p>
                     <p><span class="font-bold">年龄：</span>${memberData.age !== undefined ? memberData.age : '未知'}</p>
                 </div>
-                <div class="bg-light bg-opacity-50 rounded-lg p-3">
+                <div class="bg-light rounded-lg p-3">
                     <h4 class="font-bold mb-2">基础属性</h4>
                     <div class="grid grid-cols-2 gap-2">
             `;
@@ -9078,7 +9057,7 @@
             html += `
                     </div>
                 </div>
-                <div class="bg-light bg-opacity-50 rounded-lg p-3">
+                <div class="bg-light rounded-lg p-3">
                     <h4 class="font-bold mb-2">能力值</h4>
                     <div class="grid grid-cols-2 gap-2">
             `;
@@ -9097,7 +9076,7 @@
             // 如果是游士，显示费用
             if (memberData.hireCost) {
                 html += `
-                    <div class="bg-light bg-opacity-50 rounded-lg p-3">
+                    <div class="bg-light rounded-lg p-3">
                         <p><span class="font-bold">延请费用：</span>${memberData.hireCost}两/月</p>
                     </div>
                 `;
