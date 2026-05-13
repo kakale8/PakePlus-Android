@@ -41,7 +41,6 @@
                     },
                     backgroundImage: {
                         'scroll-pattern': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/b4188babdbc349c6af540f164f996813~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978563&x-signature=jWLlamPfQgrxnVOFlNoO0Nh7bfA%3D')",
-                        'start-bg': "url('https://zhutu955415415.oss-cn-beijing.aliyuncs.com/001%E8%83%8C%E6%99%AF%E5%9B%BE/%E4%B8%BB%E5%9B%BE.png?Expires=1778679791&OSSAccessKeyId=TMP.3L1egrNTR7HuTkXoAD7xS3XxG4e53Ytngo3QQuMmfERJHDCs8PxTEiBSrxBQgeEpKRdoL53szbmNdeX43GzFJhmrXusYLA&Signature=6M8Exi5jt52ah7x6PBdXyRdZmdE%3D')",
                         'liaodong': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/41870b50eb9c4c8babdc8c4e8757c468~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978602&x-signature=6qhtDD0aWoEqKwgaBW396XkI7N0%3D')",
                         'monan': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/410fd74530c84922968bdf32dab6e3ff~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978585&x-signature=svim6n87XFHXo%2B3330wYTKD6lGw%3D')",
                         'zhongyuan': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/0ff2e354135c48b8af7b0f3241bfe5d7~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978585&x-signature=AocQe%2FrchtDGSpKWGjkQgcljpK0%3D')",
@@ -98,7 +97,7 @@
     <!-- 游戏容器 -->
     <div id="game-container" class="relative w-full min-h-screen overflow-hidden">
         <!-- 游戏开始页面 -->
-        <div id="start-page" class="game-page absolute inset-0 bg-start-bg bg-cover bg-center flex flex-col items-center justify-center animate-fade-in">
+        <div id="start-page" class="game-page absolute inset-0 bg-scroll-pattern bg-cover bg-center flex flex-col items-center justify-center animate-fade-in">
             <div class="text-center mb-12">
                 <h1 class="text-6xl font-bold text-primary text-shadow-lg mb-4">古风家族</h1>
                 <h2 class="text-4xl font-bold text-light text-shadow">模拟经营游戏</h2>
@@ -153,7 +152,7 @@
 
         <!-- 人物创建页面 -->
         <div id="character-creation-page" class="game-page hidden absolute inset-0 bg-scroll-pattern bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel max-w-4xl w-full max-h-[80vh] overflow-y-auto scrollbar-thin animate-slide-up">
+            <div class="panel max-w-3xl w-[70%] max-h-[85vh] overflow-y-auto scrollbar-thin animate-slide-up">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-primary">人物创建</h2>
                     <button id="btn-back-to-start" class="btn-secondary">
@@ -165,19 +164,11 @@
                     <!-- 左侧：角色外观和基础信息 -->
                     <div>
                         <div class="mb-6">
-                            <h3 class="text-xl font-bold mb-2">角色外观</h3>
+                            <h3 class="text-xl font-bold mb-2">家族姓氏</h3>
                             <div class="flex justify-center">
-                                <div class="w-48 h-48 bg-primary bg-opacity-20 rounded-full border-4 border-primary flex items-center justify-center">
-                                    <i class="fa fa-user-circle text-6xl text-primary"></i>
+                                <div id="avatar-circle" class="w-48 h-48 bg-gradient-to-br from-amber-600 to-amber-800 rounded-full border-4 border-primary flex items-center justify-center shadow-lg">
+                                    <span id="avatar-text" class="text-white text-7xl font-bold"></span>
                                 </div>
-                            </div>
-                            <div class="flex justify-center gap-4 mt-4">
-                                <button class="btn-secondary py-1 px-3">
-                                    <i class="fa fa-arrow-left"></i>
-                                </button>
-                                <button class="btn-secondary py-1 px-3">
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
                             </div>
                         </div>
                         
@@ -248,8 +239,8 @@
                                 <div class="flex gap-2">
                                     <input type="range" id="constitution" min="1" max="99" value="50" class="w-full">
                                     <div class="flex flex-col gap-1">
-                                        <button class="attribute-btn-up btn-secondary py-0 px-2 h-6">+</button>
-                                        <button class="attribute-btn-down btn-secondary py-0 px-2 h-6">-</button>
+                                        <button class="attribute-btn-up btn-secondary w-8 h-6 flex items-center justify-center">+</button>
+                                        <button class="attribute-btn-down btn-secondary w-8 h-6 flex items-center justify-center">-</button>
                                     </div>
                                 </div>
                                 <p class="text-sm mt-1">影响寿命和健康</p>
@@ -263,8 +254,8 @@
                                 <div class="flex gap-2">
                                     <input type="range" id="talent" min="1" max="99" value="50" class="w-full">
                                     <div class="flex flex-col gap-1">
-                                        <button class="attribute-btn-up btn-secondary py-0 px-2 h-6">+</button>
-                                        <button class="attribute-btn-down btn-secondary py-0 px-2 h-6">-</button>
+                                        <button class="attribute-btn-up btn-secondary w-8 h-6 flex items-center justify-center">+</button>
+                                        <button class="attribute-btn-down btn-secondary w-8 h-6 flex items-center justify-center">-</button>
                                     </div>
                                 </div>
                                 <p class="text-sm mt-1">影响武力值上限和成长速度</p>
@@ -278,8 +269,8 @@
                                 <div class="flex gap-2">
                                     <input type="range" id="understanding" min="1" max="99" value="50" class="w-full">
                                     <div class="flex flex-col gap-1">
-                                        <button class="attribute-btn-up btn-secondary py-0 px-2 h-6">+</button>
-                                        <button class="attribute-btn-down btn-secondary py-0 px-2 h-6">-</button>
+                                        <button class="attribute-btn-up btn-secondary w-8 h-6 flex items-center justify-center">+</button>
+                                        <button class="attribute-btn-down btn-secondary w-8 h-6 flex items-center justify-center">-</button>
                                     </div>
                                 </div>
                                 <p class="text-sm mt-1">影响统帅、经义、农艺、畜牧的成长速度</p>
@@ -293,8 +284,8 @@
                                 <div class="flex gap-2">
                                     <input type="range" id="charm" min="1" max="99" value="50" class="w-full">
                                     <div class="flex flex-col gap-1">
-                                        <button class="attribute-btn-up btn-secondary py-0 px-2 h-6">+</button>
-                                        <button class="attribute-btn-down btn-secondary py-0 px-2 h-6">-</button>
+                                        <button class="attribute-btn-up btn-secondary w-8 h-6 flex items-center justify-center">+</button>
+                                        <button class="attribute-btn-down btn-secondary w-8 h-6 flex items-center justify-center">-</button>
                                     </div>
                                 </div>
                                 <p class="text-sm mt-1">影响与魅力属性相关事件的成功性</p>
@@ -797,58 +788,58 @@
 
         <!-- 疆域页面 -->
         <div id="territory-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel w-[90vw] max-w-lg md:max-w-xl lg:max-w-2xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
-                <div class="flex justify-between items-center mb-4">
+            <div class="panel w-[70%] max-w-3xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
+                <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-primary">大汉疆域</h2>
                     <button id="btn-back-from-territory" class="btn-secondary">
                         <i class="fa fa-arrow-left"></i> 返回
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-                    <button id="btn-state-sili" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">司隶</span>
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="btn-state-sili" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">司隶</span>
                         <span class="text-xs text-gray-600">校尉部</span>
                     </button>
-                    <button id="btn-state-yuzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">豫州</span>
+                    <button id="btn-state-yuzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">豫州</span>
                     </button>
-                    <button id="btn-state-ji" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">冀州</span>
+                    <button id="btn-state-ji" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">冀州</span>
                     </button>
-                    <button id="btn-state-yanzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">兖州</span>
+                    <button id="btn-state-yanzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">兖州</span>
                     </button>
-                    <button id="btn-state-xuzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">徐州</span>
+                    <button id="btn-state-xuzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">徐州</span>
                     </button>
-                    <button id="btn-state-qingzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">青州</span>
+                    <button id="btn-state-qingzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">青州</span>
                     </button>
-                    <button id="btn-state-jingzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">荆州</span>
+                    <button id="btn-state-jingzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">荆州</span>
                     </button>
-                    <button id="btn-state-yangzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">扬州</span>
+                    <button id="btn-state-yangzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">扬州</span>
                     </button>
-                    <button id="btn-state-yizhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">益州</span>
+                    <button id="btn-state-yizhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">益州</span>
                     </button>
-                    <button id="btn-state-liangzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">凉州</span>
+                    <button id="btn-state-liangzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">凉州</span>
                     </button>
-                    <button id="btn-state-bingzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">并州</span>
+                    <button id="btn-state-bingzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">并州</span>
                     </button>
-                    <button id="btn-state-youzhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">幽州</span>
+                    <button id="btn-state-youzhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">幽州</span>
                     </button>
-                    <button id="btn-state-jiaozhou" class="btn-game flex flex-col items-center justify-center py-4">
-                        <span class="text-lg">交州</span>
+                    <button id="btn-state-jiaozhou" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px]">
+                        <span class="text-sm">交州</span>
                     </button>
-                    <button id="btn-state-xiyu" class="btn-game flex flex-col items-center justify-center py-4 bg-amber-600">
-                        <span class="text-lg">西域</span>
-                        <span class="text-xs text-gray-200">都护府</span>
+                    <button id="btn-state-xiyu" class="btn-game flex flex-col items-center justify-center py-2 px-1.5 h-[48px] bg-amber-600">
+                        <span class="text-sm">西域</span>
+                        <span class="text-xs text-gray-200">长史府</span>
                     </button>
                 </div>
             </div>
@@ -856,7 +847,7 @@
 
         <!-- 郡信息页面 -->
         <div id="county-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel w-[90vw] max-w-lg md:max-w-xl lg:max-w-2xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
+            <div class="panel w-[70%] max-w-3xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary" id="county-page-title">郡信息</h2>
                     <div class="flex gap-2">
@@ -1126,7 +1117,7 @@
 
         <!-- 开拓页面 -->
         <div id="exploration-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel w-[90vw] max-w-md lg:max-w-xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
+            <div class="panel w-[85%] max-w-md lg:max-w-xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-primary">开拓</h2>
                     <button id="btn-back-from-exploration" class="btn-secondary">
@@ -1144,7 +1135,7 @@
 
         <!-- 开拓详情页面 -->
         <div id="exploration-detail-page" class="game-page hidden absolute inset-0 bg-cover bg-center flex items-center justify-center animate-fade-in">
-            <div class="panel w-[90vw] max-w-lg lg:max-w-2xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
+            <div class="panel w-[85%] max-w-lg lg:max-w-2xl animate-slide-up max-h-[85vh] overflow-y-auto scrollbar-thin">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-primary">开拓详情</h2>
                     <button id="btn-back-from-exploration-detail" class="btn-secondary">
@@ -1617,6 +1608,7 @@
         const gameState = {
             player: {
                 name: "",
+                avatar: "", // 出身类型：scholar(士族子弟), general(将军), prince(皇子), merchant(商人)
                 birthplace: "",
                 birthYear: 180,
                 age: 0,
@@ -3175,21 +3167,30 @@
                         const newValue = parseInt(this.value);
                         const diff = newValue - oldValue;
                         
-                        if (diff > 0 && remainingPoints >= diff) {
-                            remainingPoints -= diff;
+                        if (diff > 0) {
+                            // 增加属性
+                            const maxAdd = Math.min(diff, remainingPoints);
+                            const actualNewValue = oldValue + maxAdd;
+                            remainingPoints -= maxAdd;
+                            
+                            if (actualNewValue !== newValue) {
+                                // 如果不能增加到目标值，设置为实际能达到的值
+                                this.value = actualNewValue;
+                            }
+                            valueDisplay.textContent = actualNewValue;
                         } else if (diff < 0) {
-                            remainingPoints -= diff;
+                            // 减少属性
+                            remainingPoints -= diff; // diff是负数，所以这里是加
+                            valueDisplay.textContent = newValue;
                         } else {
-                            // 如果点数不足，恢复原值
-                            this.value = oldValue;
+                            // 没有变化
                             return;
                         }
                         
-                        valueDisplay.textContent = newValue;
                         document.getElementById('remaining-points').textContent = remainingPoints;
                         
                         // 更新游戏状态
-                        gameState.player.attributes[this.id] = newValue;
+                        gameState.player.attributes[this.id] = parseInt(this.value);
                     });
                 }
             });
@@ -4764,18 +4765,20 @@
             html += '</div>';
             
             // 周边部族卡片
-            html += '<div class="bg-white border border-gray-200 rounded-lg p-3">';
+            html += '<div class="border border-gray-200 rounded-lg p-3 mb-4">';
             html += '<h4 class="font-bold mb-3">周边部族</h4>';
             regionData.tribes.forEach(tribe => {
                 const canAbsorb = tribe.favor >= 100 && !tribe.subjugated;
                 const favorColor = tribe.favor >= 70 ? '#22c55e' : tribe.favor >= 40 ? '#eab308' : '#ef4444';
-                const foodCost = Math.floor(tribe.population * 80 / 80); // 1石 = 80斤
-                html += '<div class="border-b border-gray-100 pb-3 mb-3 last:border-b-0 last:pb-0 last:mb-0">';
+                const foodCost = Math.floor(tribe.population * 80 / 80);
+                const foodCostWan = (foodCost / 10000).toFixed(2);
+                
+                html += '<div class="border border-gray-200 rounded-lg p-3 mb-3">';
+                // 头部：首领名称和好感度
                 html += '<div class="flex justify-between items-start mb-2">';
                 html += '<div>';
                 html += '<p class="font-bold text-sm">' + tribe.leader + '</p>';
                 html += '<p class="text-xs text-gray-500">' + tribe.name + '</p>';
-                html += '<p class="text-xs text-gray-600">人口: ' + (tribe.population / 10000).toFixed(1) + '万 | 士兵: ' + (tribe.soldiers / 10000).toFixed(1) + '万 | 土地: ' + (tribe.land / 10000).toFixed(1) + '万</p>';
                 html += '</div>';
                 html += '<div class="text-right">';
                 html += '<p class="text-xs text-gray-500">好感度</p>';
@@ -4786,12 +4789,16 @@
                 html += '<span class="text-xs font-bold">' + tribe.favor + '</span>';
                 html += '</div>';
                 html += '</div>';
-                html += '<div class="flex gap-1">';
-                html += '<button onclick="confirmBefriend(\'' + regionId + '\', ' + tribe.id + ', \'' + tribe.name + '\', ' + foodCost + ')" class="btn-game flex-1 text-xs py-1.5">交好(' + foodCost + '石)</button>';
-                html += '<button onclick="confirmAttack(\'' + regionId + '\', ' + tribe.id + ', \'' + tribe.name + '\')" class="btn-game flex-1 text-xs py-1.5 bg-red-600">征伐</button>';
-                if (canAbsorb) {
-                    html += '<button onclick="absorbTribe(\'' + regionId + '\', ' + tribe.id + ')" class="btn-game flex-1 text-xs py-1.5 bg-green-600">吸纳</button>';
-                }
+                html += '</div>';
+                // 信息行：人口、士兵、土地
+                html += '<p class="text-xs text-gray-600 mb-1">人口: ' + (tribe.population / 10000).toFixed(1) + '万 | 士兵: ' + (tribe.soldiers / 10000).toFixed(1) + '万 | 土地: ' + (tribe.land / 10000).toFixed(1) + '万</p>';
+                // 交好费用
+                html += '<p class="text-xs text-gray-500 mb-2">交好费用: ' + foodCostWan + '万石</p>';
+                // 操作按钮
+                html += '<div class="flex gap-2">';
+                html += '<button onclick="confirmBefriend(\'' + regionId + '\', ' + tribe.id + ', \'' + tribe.name + '\', ' + foodCost + ')" class="btn-game flex-1 text-xs py-2">交好</button>';
+                html += '<button onclick="confirmAttack(\'' + regionId + '\', ' + tribe.id + ', \'' + tribe.name + '\')" class="btn-game flex-1 text-xs py-2 bg-red-600">征伐</button>';
+                html += '<button onclick="' + (canAbsorb ? 'absorbTribe(\'' + regionId + '\', ' + tribe.id + ')' : 'alert(\'好感度需达到100才能吸纳\')') + '" class="btn-game flex-1 text-xs py-2 ' + (canAbsorb ? 'bg-green-600' : 'bg-gray-400 cursor-not-allowed') + '">吸纳</button>';
                 html += '</div>';
                 html += '</div>';
             });
@@ -4859,12 +4866,17 @@
             // 随机分配土地
             const landAllocations = [];
             let remainingLand = totalTribeLand;
+            // 每个部族最少50万亩土地，确保人口至少5000人
+            const minLand = 500000;
+            // 根据最小土地限制调整部族数量
+            tribeCount = Math.min(tribeCount, Math.floor(totalTribeLand / minLand));
+            if (tribeCount < 1) tribeCount = 1;
+            
             for (let i = 0; i < tribeCount; i++) {
                 if (i === tribeCount - 1) {
                     landAllocations.push(remainingLand);
                 } else {
-                    // 随机分配，确保每个部族至少有1000亩土地
-                    const minLand = 1000;
+                    // 随机分配，确保每个部族至少有50万亩土地
                     const maxLand = remainingLand - (tribeCount - i - 1) * minLand;
                     const land = Math.floor(Math.random() * (maxLand - minLand + 1)) + minLand;
                     landAllocations.push(land);
@@ -11348,6 +11360,23 @@
                     }
                 }
             });
+            
+            // 头像姓氏提取函数
+            function updateAvatarWithSurname() {
+                const playerName = document.getElementById('player-name').value.trim();
+                const avatarText = document.getElementById('avatar-text');
+                
+                if (playerName && playerName.length > 0) {
+                    // 提取姓氏（第一个字符）
+                    const surname = playerName.charAt(0);
+                    avatarText.textContent = surname;
+                } else {
+                    avatarText.textContent = '';
+                }
+            }
+            
+            // 监听姓名输入变化
+            document.getElementById('player-name').addEventListener('input', updateAvatarWithSurname);
             
             document.getElementById('btn-next-step').addEventListener('click', function() {
                 const playerName = document.getElementById('player-name').value.trim();
