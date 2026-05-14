@@ -71,6 +71,9 @@
             .btn-icon {
                 @apply flex items-center justify-center w-12 h-12 rounded-full bg-primary text-dark shadow-lg hover:bg-opacity-90 transition-all duration-300 border-2 border-secondary;
             }
+            .btn-adjust {
+                @apply btn-secondary w-20 text-xs px-4 py-1;
+            }
             .panel {
                 @apply bg-light rounded-lg shadow-xl border-2 border-secondary p-4;
             }
@@ -100,13 +103,19 @@
             .scrollbar-hidden::-webkit-scrollbar-thumb {
                 background: transparent;
             }
-            #game-main-page.info-expanded .pt-32 {
+            #game-main-page.info-expanded .pt-32,
+            #game-main-page.info-expanded .pt-28 {
                 padding-top: 16rem;
             }
         }
     </style>
 </head>
 <body class="font-serif bg-scroll-pattern bg-cover bg-fixed bg-center min-h-screen">
+    <!-- 背景音乐 -->
+    <audio id="game-music" loop preload="auto">
+        <source src="http://bbs.009y.com/UploadFile/2006-10/20061019132556502.mp3" type="audio/mpeg">
+    </audio></audio>
+    
     <!-- 游戏容器 -->
     <div id="game-container" class="relative w-full min-h-screen overflow-hidden">
         <!-- 游戏开始页面 -->
@@ -225,7 +234,7 @@
                         <div class="mb-6">
                             <h3 class="text-xl font-bold mb-2">出生年</h3>
                             <div class="flex items-center gap-4">
-                                <input type="range" id="player-birthyear" min="170" max="220" value="180" class="w-full">
+                                <input type="range" id="player-birthyear" min="160" max="220" value="180" class="w-full">
                                 <span id="birthyear-value" class="text-lg font-bold">180</span>
                                 <span class="text-lg">年</span>
                             </div>
@@ -368,6 +377,39 @@
             </div>
         </div>
 
+        <!-- 结果弹窗 -->
+        <div id="result-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+            <div class="panel max-w-md animate-slide-up">
+                <h3 class="text-xl font-bold text-primary mb-3" id="result-modal-title">结果</h3>
+                <div id="result-modal-content" class="mb-4 text-sm whitespace-pre-wrap">
+                </div>
+                <div class="flex justify-center">
+                    <button id="result-modal-close" class="btn-game">
+                        关闭 <i class="fa fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 配备甲胄弹窗 -->
+        <div id="equip-armor-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+            <div class="panel max-w-md animate-slide-up">
+                <h3 class="text-xl font-bold text-primary mb-3">配备甲胄</h3>
+                <p class="mb-2 text-sm">当前甲胄存量: <span id="equip-armor-current-stock" class="font-bold">0</span> 副</p>
+                <p class="mb-2 text-sm">已配备甲胄: <span id="equip-armor-current-equipped" class="font-bold">0</span> 副</p>
+                <div class="text-center mb-2">
+                    <span class="text-lg font-bold">配备: <span id="equip-armor-value">0</span> 副</span>
+                </div>
+                <div class="mb-4">
+                    <input type="range" id="equip-armor-slider" min="0" max="0" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateEquipArmorDisplay()">
+                </div>
+                <div class="flex justify-center gap-2">
+                    <button id="equip-armor-cancel" class="btn-secondary">取消</button>
+                    <button id="equip-armor-confirm" class="btn-game">确认配备</button>
+                </div>
+            </div>
+        </div>
+
         <!-- 游戏主体页面 -->
         <div id="game-main-page" class="game-page hidden absolute inset-0 bg-cover bg-center animate-fade-in">
             <!-- 顶部信息栏 -->
@@ -429,35 +471,39 @@
                             <i class="fa fa-crown"></i>
                             <span class="text-xs">称号</span>
                         </button>
+                        <button id="btn-guide" class="btn-icon flex items-center gap-1">
+                            <i class="fa fa-book"></i>
+                            <span class="text-xs">说明</span>
+                        </button>
                     </div>
                 </div>
             </div>
             
             <!-- 中央功能区 -->
-            <div class="absolute inset-0 pt-32 pb-24 flex items-center justify-center pointer-events-none">
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 pointer-events-auto">
-                    <button id="btn-farmland" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+            <div class="absolute inset-0 pt-28 pb-20 flex items-center justify-center pointer-events-none">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 md:gap-3 pointer-events-auto max-w-4xl">
+                    <button id="btn-farmland" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>农田</span>
                     </button>
-                    <button id="btn-market" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+                    <button id="btn-market" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>市肆</span>
                     </button>
-                    <button id="btn-manor" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+                    <button id="btn-manor" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>庄园</span>
                     </button>
-                    <button id="btn-family-house" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+                    <button id="btn-family-house" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>家宅</span>
                     </button>
-                    <button id="btn-industry" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+                    <button id="btn-industry" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>产业</span>
                     </button>
-                    <button id="btn-city-gate" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+                    <button id="btn-city-gate" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>城门</span>
                     </button>
-                    <button id="btn-marriage" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+                    <button id="btn-marriage" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>姻缘签</span>
                     </button>
-                    <button id="btn-territory" class="btn-game w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 flex flex-col items-center justify-center text-sm">
+                    <button id="btn-territory" class="btn-game w-20 h-20 sm:w-24 sm:h-24 md:w-24 md:h-24 lg:w-20 lg:h-20 xl:w-24 xl:h-24 flex flex-col items-center justify-center text-xs md:text-sm">
                         <span>疆域</span>
                     </button>
                 </div>
@@ -519,14 +565,21 @@
                                 关闭
                             </button>
                         </div>
+                        <!-- 第一行：标签、滑动条、数值 -->
                         <div class="flex items-center gap-2 mb-2">
                             <span class="text-sm">派遣人数:</span>
-                            <button id="servant-minus1" class="btn-secondary text-sm w-8" onclick="adjustServantCount(-1)">-1</button>
-                            <button id="servant-minus10" class="btn-secondary text-sm w-10" onclick="adjustServantCount(-10)">-10</button>
                             <input type="range" id="servant-slider" min="0" max="0" value="0" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateServantDisplay()">
-                            <button id="servant-plus10" class="btn-secondary text-sm w-10" onclick="adjustServantCount(10)">+10</button>
-                            <button id="servant-plus1" class="btn-secondary text-sm w-8" onclick="adjustServantCount(1)">+1</button>
                             <span id="servant-value" class="font-bold w-10 text-right">0</span>
+                        </div>
+                        <!-- 第二行：+1/-1 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="servant-minus1" class="btn-adjust" onclick="adjustServantCount(-1)">-1</button>
+                            <button id="servant-plus1" class="btn-adjust" onclick="adjustServantCount(1)">+1</button>
+                        </div>
+                        <!-- 第三行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="servant-minus10" class="btn-adjust" onclick="adjustServantCount(-10)">-10</button>
+                            <button id="servant-plus10" class="btn-adjust" onclick="adjustServantCount(10)">+10</button>
                         </div>
                         <p class="text-xs text-gray-600 mb-3">(每人20亩)</p>
                         <button id="btn-apply-servant" class="btn-game text-sm py-1 px-4 w-full" onclick="applyServantDispatch()">
@@ -553,6 +606,7 @@
                 
                 <div class="mt-6" id="farm-manager-manager-section">
                     <h3 class="text-xl font-bold mb-2">农田管事</h3>
+                    <p class="text-sm text-amber-700 mb-2">💡 提示：只能在每年2月任命农田管事</p>
                     <p class="mb-2">管事人数: <span id="farm-manager-count" class="font-bold">0</span> / 4</p>
                     <p class="mb-2">农业产量增值: <span id="farm-bonus-percent" class="font-bold">0</span>%</p>
                     <div id="farm-manager-list" class="space-y-2 mb-3">
@@ -646,6 +700,10 @@
                     <button id="btn-equip-warhorse-manor" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto bg-blue-600">
                         <span class="text-base">配备战马</span>
                         <span class="text-xs mt-0.5">(提高战力下限)</span>
+                    </button>
+                    <button id="btn-equip-armor-manor" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto bg-gray-700">
+                        <span class="text-base">配备甲胄</span>
+                        <span class="text-xs mt-0.5">(提高战力上限)</span>
                     </button>
                     <button id="btn-make-armor-manor" class="btn-game flex flex-col items-center justify-center h-17 w-[70%] mx-auto bg-gray-600">
                         <span class="text-base">制造甲胄</span>
@@ -1112,12 +1170,19 @@
                         <div class="text-center mb-2">
                             <span class="text-lg font-bold">购买: <span id="horse-value">0</span> 匹</span>
                         </div>
-                        <div class="flex items-center gap-1 mb-2">
-                            <button id="horse-minus10" class="btn-secondary text-xs w-10 px-1" onclick="adjustHorseCount(-10)">-10</button>
-                            <button id="horse-minus1" class="btn-secondary text-xs w-8 px-1" onclick="adjustHorseCount(-1)">-1</button>
-                            <input type="range" id="horse-slider" min="0" max="0" value="0" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateHorseDisplay(); updateCowSliderMax()">
-                            <button id="horse-plus1" class="btn-secondary text-xs w-8 px-1" onclick="adjustHorseCount(1)">+1</button>
-                            <button id="horse-plus10" class="btn-secondary text-xs w-10 px-1" onclick="adjustHorseCount(10)">+10</button>
+                        <!-- 第一行：滑动条 -->
+                        <div class="mb-2">
+                            <input type="range" id="horse-slider" min="0" max="0" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateHorseDisplay(); updateCowSliderMax()">
+                        </div>
+                        <!-- 第二行：+1/-1 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="horse-minus1" class="btn-adjust" onclick="adjustHorseCount(-1)">-1</button>
+                            <button id="horse-plus1" class="btn-adjust" onclick="adjustHorseCount(1)">+1</button>
+                        </div>
+                        <!-- 第三行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="horse-minus10" class="btn-adjust" onclick="adjustHorseCount(-10)">-10</button>
+                            <button id="horse-plus10" class="btn-adjust" onclick="adjustHorseCount(10)">+10</button>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">预计花费: <span id="horse-cost" class="font-bold">0</span> 两</p>
                         <button id="btn-breed-horse" class="btn-game w-full" onclick="buyHorses()">购买马匹</button>
@@ -1132,12 +1197,19 @@
                         <div class="text-center mb-2">
                             <span class="text-lg font-bold">购买: <span id="cow-value">0</span> 头</span>
                         </div>
-                        <div class="flex items-center gap-1 mb-2">
-                            <button id="cow-minus10" class="btn-secondary text-xs w-10 px-1" onclick="adjustCowCount(-10)">-10</button>
-                            <button id="cow-minus1" class="btn-secondary text-xs w-8 px-1" onclick="adjustCowCount(-1)">-1</button>
-                            <input type="range" id="cow-slider" min="0" max="0" value="0" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateCowDisplay(); updateHorseSliderMax()">
-                            <button id="cow-plus1" class="btn-secondary text-xs w-8 px-1" onclick="adjustCowCount(1)">+1</button>
-                            <button id="cow-plus10" class="btn-secondary text-xs w-10 px-1" onclick="adjustCowCount(10)">+10</button>
+                        <!-- 第一行：滑动条 -->
+                        <div class="mb-2">
+                            <input type="range" id="cow-slider" min="0" max="0" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateCowDisplay(); updateHorseSliderMax()">
+                        </div>
+                        <!-- 第二行：+1/-1 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="cow-minus1" class="btn-adjust" onclick="adjustCowCount(-1)">-1</button>
+                            <button id="cow-plus1" class="btn-adjust" onclick="adjustCowCount(1)">+1</button>
+                        </div>
+                        <!-- 第三行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="cow-minus10" class="btn-adjust" onclick="adjustCowCount(-10)">-10</button>
+                            <button id="cow-plus10" class="btn-adjust" onclick="adjustCowCount(10)">+10</button>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">预计花费: <span id="cow-cost" class="font-bold">0</span> 两</p>
                         <button id="btn-breed-cow" class="btn-game w-full" onclick="buyCows()">购买牛只</button>
@@ -1152,12 +1224,19 @@
                         <div class="text-center mb-2">
                             <span class="text-lg font-bold">配备: <span id="plow-cow-value">0</span> 头</span>
                         </div>
-                        <div class="flex items-center gap-1 mb-2">
-                            <button id="plow-cow-minus10" class="btn-secondary text-xs w-10 px-1" onclick="adjustPlowCowCount(-10)">-10</button>
-                            <button id="plow-cow-minus1" class="btn-secondary text-xs w-8 px-1" onclick="adjustPlowCowCount(-1)">-1</button>
-                            <input type="range" id="plow-cow-slider" min="0" max="0" value="0" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updatePlowCowDisplay()">
-                            <button id="plow-cow-plus1" class="btn-secondary text-xs w-8 px-1" onclick="adjustPlowCowCount(1)">+1</button>
-                            <button id="plow-cow-plus10" class="btn-secondary text-xs w-10 px-1" onclick="adjustPlowCowCount(10)">+10</button>
+                        <!-- 第一行：滑动条 -->
+                        <div class="mb-2">
+                            <input type="range" id="plow-cow-slider" min="0" max="0" value="0" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updatePlowCowDisplay()">
+                        </div>
+                        <!-- 第二行：+1/-1 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="plow-cow-minus1" class="btn-adjust" onclick="adjustPlowCowCount(-1)">-1</button>
+                            <button id="plow-cow-plus1" class="btn-adjust" onclick="adjustPlowCowCount(1)">+1</button>
+                        </div>
+                        <!-- 第三行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="plow-cow-minus10" class="btn-adjust" onclick="adjustPlowCowCount(-10)">-10</button>
+                            <button id="plow-cow-plus10" class="btn-adjust" onclick="adjustPlowCowCount(10)">+10</button>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">已配备耕牛: <span id="equipped-cow-count" class="font-bold">0</span> 头</p>
                         <button id="btn-equip-cow-farm" class="btn-game w-full" onclick="equipPlowCows()">配备耕牛</button>
@@ -1340,14 +1419,21 @@
                     
                     <!-- 购买农田 -->
                     <div class="mt-4">
-                        <div class="flex items-center gap-1 mb-2">
+                        <!-- 第一行：标签、滑动条、数值 -->
+                        <div class="flex items-center gap-2 mb-2">
                             <span class="w-16">购买数量:</span>
-                            <button id="farmland-buy-minus10" class="btn-secondary text-xs w-10 px-1">-10</button>
-                            <button id="farmland-buy-minus1" class="btn-secondary text-xs w-8 px-1">-1</button>
                             <input type="range" id="farmland-buy-slider" min="1" max="1" value="1" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                            <button id="farmland-buy-plus1" class="btn-secondary text-xs w-8 px-1">+1</button>
-                            <button id="farmland-buy-plus10" class="btn-secondary text-xs w-10 px-1">+10</button>
                             <span id="farmland-buy-value" class="font-bold w-14 text-right">1 亩</span>
+                        </div>
+                        <!-- 第二行：+1/-1 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="farmland-buy-minus1" class="btn-adjust">-1</button>
+                            <button id="farmland-buy-plus1" class="btn-adjust">+1</button>
+                        </div>
+                        <!-- 第三行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="farmland-buy-minus10" class="btn-adjust">-10</button>
+                            <button id="farmland-buy-plus10" class="btn-adjust">+10</button>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">预计花费: <span id="farmland-buy-cost" class="font-bold">100</span> 两</p>
                         <div class="flex justify-center">
@@ -1357,14 +1443,21 @@
                     
                     <!-- 出售农田 -->
                     <div class="mt-4">
-                        <div class="flex items-center gap-1 mb-2">
+                        <!-- 第一行：标签、滑动条、数值 -->
+                        <div class="flex items-center gap-2 mb-2">
                             <span class="w-16">出售数量:</span>
-                            <button id="farmland-sell-minus10" class="btn-secondary text-xs w-10 px-1">-10</button>
-                            <button id="farmland-sell-minus1" class="btn-secondary text-xs w-8 px-1">-1</button>
                             <input type="range" id="farmland-sell-slider" min="1" max="1" value="1" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                            <button id="farmland-sell-plus1" class="btn-secondary text-xs w-8 px-1">+1</button>
-                            <button id="farmland-sell-plus10" class="btn-secondary text-xs w-10 px-1">+10</button>
                             <span id="farmland-sell-value" class="font-bold w-12 text-right">1 亩</span>
+                        </div>
+                        <!-- 第二行：+1/-1 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="farmland-sell-minus1" class="btn-adjust">-1</button>
+                            <button id="farmland-sell-plus1" class="btn-adjust">+1</button>
+                        </div>
+                        <!-- 第三行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="farmland-sell-minus10" class="btn-adjust">-10</button>
+                            <button id="farmland-sell-plus10" class="btn-adjust">+10</button>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">预计获得: <span id="farmland-sell-earn" class="font-bold">50</span> 两</p>
                         <div class="flex justify-center">
@@ -1381,14 +1474,21 @@
                     
                     <!-- 购买牧场 -->
                     <div class="mt-4">
-                        <div class="flex items-center gap-1 mb-2">
+                        <!-- 第一行：标签、滑动条、数值 -->
+                        <div class="flex items-center gap-2 mb-2">
                             <span class="w-12 text-xs">购买数量:</span>
-                            <button id="ranch-buy-minus100" class="btn-secondary text-xs w-8 px-0.5">-100</button>
-                            <button id="ranch-buy-minus10" class="btn-secondary text-xs w-7 px-0.5">-10</button>
                             <input type="range" id="ranch-buy-slider" min="10" max="10" value="10" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateRanchBuyDisplay()">
-                            <button id="ranch-buy-plus10" class="btn-secondary text-xs w-7 px-0.5">+10</button>
-                            <button id="ranch-buy-plus100" class="btn-secondary text-xs w-8 px-0.5">+100</button>
                             <span id="ranch-buy-value" class="font-bold w-10 text-right text-xs">10亩</span>
+                        </div>
+                        <!-- 第二行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="ranch-buy-minus10" class="btn-adjust">-10</button>
+                            <button id="ranch-buy-plus10" class="btn-adjust">+10</button>
+                        </div>
+                        <!-- 第三行：+100/-100 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="ranch-buy-minus100" class="btn-adjust">-100</button>
+                            <button id="ranch-buy-plus100" class="btn-adjust">+100</button>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">预计花费: <span id="ranch-buy-cost" class="font-bold">800</span> 两（最少购买10亩）</p>
                         <div class="flex justify-center">
@@ -1398,14 +1498,21 @@
                     
                     <!-- 出售牧场 -->
                     <div class="mt-4">
-                        <div class="flex items-center gap-1 mb-2">
+                        <!-- 第一行：标签、滑动条、数值 -->
+                        <div class="flex items-center gap-2 mb-2">
                             <span class="w-12 text-xs">出售数量:</span>
-                            <button id="ranch-sell-minus100" class="btn-secondary text-xs w-8 px-0.5">-100</button>
-                            <button id="ranch-sell-minus10" class="btn-secondary text-xs w-7 px-0.5">-10</button>
                             <input type="range" id="ranch-sell-slider" min="1" max="1" value="1" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateRanchSellDisplay()">
-                            <button id="ranch-sell-plus10" class="btn-secondary text-xs w-7 px-0.5">+10</button>
-                            <button id="ranch-sell-plus100" class="btn-secondary text-xs w-8 px-0.5">+100</button>
                             <span id="ranch-sell-value" class="font-bold w-10 text-right text-xs">1亩</span>
+                        </div>
+                        <!-- 第二行：+10/-10 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="ranch-sell-minus10" class="btn-adjust">-10</button>
+                            <button id="ranch-sell-plus10" class="btn-adjust">+10</button>
+                        </div>
+                        <!-- 第三行：+100/-100 -->
+                        <div class="flex justify-center items-center gap-4 mb-2">
+                            <button id="ranch-sell-minus100" class="btn-adjust">-100</button>
+                            <button id="ranch-sell-plus100" class="btn-adjust">+100</button>
                         </div>
                         <p class="text-sm text-gray-600 mb-2">预计获得: <span id="ranch-sell-earn" class="font-bold">20</span> 两</p>
                         <div class="flex justify-center">
@@ -1441,7 +1548,7 @@
         </div>
 
         <!-- 存档页面 -->
-        <div id="save-load-page" class="modal-page hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+        <div id="save-load-page" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
             <div class="panel max-w-2xl animate-slide-up">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary" id="save-load-title">保存游戏</h2>
@@ -1504,7 +1611,7 @@
         </div>
 
         <!-- 设置页面 -->
-        <div id="settings-page" class="modal-page hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+        <div id="settings-page" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
             <div class="panel max-w-md animate-slide-up">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">游戏设置</h2>
@@ -1607,7 +1714,7 @@
         </div>
 
         <!-- 传家宝详情弹窗 -->
-        <div id="heirloom-detail-modal" class="modal-page hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+        <div id="heirloom-detail-modal" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
             <div class="panel max-w-md animate-slide-up">
                 <div class="flex justify-between items-center mb-4">
                     <h2 id="heirloom-detail-title" class="text-2xl font-bold text-primary">传家宝名称</h2>
@@ -1625,7 +1732,7 @@
         </div>
 
         <!-- 山贼信息弹窗 -->
-        <div id="bandit-info-modal" class="modal-page hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+        <div id="bandit-info-modal" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
             <div class="panel max-w-md animate-slide-up">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-2xl font-bold text-primary">山贼信息</h2>
@@ -1640,7 +1747,7 @@
         </div>
 
         <!-- 称号页面 -->
-        <div id="titles-page" class="modal-page hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fade-in">
+        <div id="titles-page" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
             <div class="panel max-w-2xl max-h-[80vh] overflow-y-auto scrollbar-thin animate-slide-up">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-3xl font-bold text-primary">称号</h2>
@@ -1659,17 +1766,129 @@
             </div>
         </div>
 
+        <!-- 说明页面 -->
+        <div id="guide-page" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
+            <div class="panel w-[70vw] max-w-lg max-h-[85vh] overflow-y-auto scrollbar-hidden animate-slide-up" style="padding-top: 0;">
+                <div class="flex justify-between items-center mb-4 sticky top-0 left-[-2px] right-[-2px] bg-light z-10 px-4 pt-4 pb-2 border-b-2 border-secondary">
+                    <h2 class="text-3xl font-bold text-primary">游戏功能说明</h2>
+                    <button id="btn-back-from-guide" class="btn-secondary">
+                        <i class="fa fa-arrow-left"></i> 返回
+                    </button>
+                </div>
+                
+                <div class="space-y-6 px-4 pb-4">
+                    <!-- 四维属性 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">四维属性</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">1. 体质：</span>影响寿命</p>
+                            <p><span class="font-bold text-secondary">2. 力量：</span>影响武力</p>
+                            <p><span class="font-bold text-secondary">3. 悟性：</span>影响统帅、经义、农艺、畜牧</p>
+                            <p><span class="font-bold text-secondary">4. 寿命：</span>隐藏属性，到了年龄家族成员就会去世</p>
+                            <p><span class="font-bold text-secondary">5. 武力：</span>90以下可有可无，达到90开始，在战斗中有概率触发冲阵效果，是以弱胜强的关键。武力值越高，触发冲阵概率越大</p>
+                            <p><span class="font-bold text-secondary">6. 统帅：</span>战斗核心，划重点！50以下不要为将，一将无能累死千军。50以上越高越好，是致胜关键</p>
+                            <p><span class="font-bold text-secondary">7. 经义：</span>玩法开发中</p>
+                            <p><span class="font-bold text-secondary">8. 农艺：</span>影响粮食产量</p>
+                            <p><span class="font-bold text-secondary">9. 畜牧：</span>玩法开发中</p>
+                        </div>
+                    </div>
+
+                    <!-- 农田 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">农田</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">1. 最稳定的收入：</span>每年亩产3石</p>
+                            <p><span class="font-bold text-secondary">2. 仆人耕种：</span>可派遣仆人耕种，每个仆人负责20亩农田</p>
+                            <p><span class="font-bold text-secondary">3. 消耗低：</span>仆人每天消耗2斤粮食，一年9石，是最稳定的收入来源</p>
+                            <p><span class="font-bold text-secondary">4. 增产方式：</span>配备耕牛、任命农田管事、获得传家宝都可以增加粮食产量</p>
+                        </div>
+                    </div>
+
+                    <!-- 市肆 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">市肆</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">1. 粮价浮动：</span>注意粮价波动，这是快速积累资金的关键</p>
+                            <p><span class="font-bold text-secondary">2. 土地交易：</span>买卖农田和牧场都在这里进行</p>
+                            <p><span class="font-bold text-secondary">3. 后续开发：</span>更多玩法正在制作中</p>
+                        </div>
+                    </div>
+
+                    <!-- 庄园 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">庄园</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">1. 招募私兵：</span>私兵是保卫家族的关键，但每月每个私兵消耗150斤粮食，注意合理规划</p>
+                            <p><span class="font-bold text-secondary">2. 招募仆人：</span>提供钱粮的劳动力，每天消耗2斤粮食，种地、贸易都离不开他们</p>
+                            <p><span class="font-bold text-secondary">3. 任命统领/副统领：</span>家兵统领必须选统帅超过50的，没有就最好不要选。武力值上90的可任命为副统领，战争中会有惊喜</p>
+                            <p><span class="font-bold text-secondary">4. 购买奴隶：</span>获得西域长史职务才能使用（待完善）</p>
+                            <p><span class="font-bold text-secondary">5. 配备战马：</span>提高私兵战力下限</p>
+                            <p><span class="font-bold text-secondary">6. 制造甲胄：</span>需要杀牛才能制造，提高私兵战力下限，提供粮草</p>
+                            <p><span class="font-bold text-secondary">7. 配备甲胄：</span>提高战力下限（下个版本更新）</p>
+                        </div>
+                    </div>
+
+                    <!-- 家宅 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">家宅</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">1. 祠堂：</span>祭祖可让当年新生儿四维属性提升；家谱可查看家族成员信息</p>
+                            <p><span class="font-bold text-secondary">2. 族学：</span>培养子弟的学堂</p>
+                            <p><span class="font-bold text-secondary">3. 客馆：</span>前期为族学延请老师，历史名人功能还在制作中</p>
+                        </div>
+                    </div>
+
+                    <!-- 产业 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">产业</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">1. 商队：</span>八大贸易区，各种特产，行商各地赚取钱财。注意劫匪，统领的统帅和武力、仆人数量都很关键</p>
+                            <p><span class="font-bold text-secondary">2. 工坊：</span>八大贸易区，每个地方可建工坊不同，记得派遣仆人，否则无法生产</p>
+                            <p><span class="font-bold text-secondary">3. 牧场：</span>买卖牧场、放马牧牛都在这里。牛羊不消耗粮草，每年繁殖，一本万利，但数量受限于牧场面积</p>
+                        </div>
+                    </div>
+
+                    <!-- 城门 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">城门</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">1. 本地事件：</span>目前仅为山贼事件，山贼身上每年有概率增加持有的传家宝，打败必掉落。但要衡量实力，别养得尾大不掉</p>
+                            <p><span class="font-bold text-secondary">2. 历史事件：</span>自170年开始根据史实刷新历史事件，只有所处区域能够参与。参与并让支持者获胜，会掉落高阶传家宝和大量钱粮。注意马匹的运用！</p>
+                            <p><span class="font-bold text-secondary">3. 开拓功能：</span>大汉十三州，所有边疆都能向外拓土。为家族还是为大汉开疆拓土自己选。警告：弱小的时候脱离大汉会血本无归！家兵是你唯一的保障，注意维持家兵数量</p>
+                        </div>
+                    </div>
+
+                    <!-- 姻缘签 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">姻缘签</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">婚配：</span>为家族子弟婚配的地方</p>
+                        </div>
+                    </div>
+
+                    <!-- 疆域 -->
+                    <div class="bg-light rounded-lg p-4 border border-secondary">
+                        <h3 class="text-xl font-bold text-primary mb-3">疆域</h3>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-bold text-secondary">声望系统：</span>大汉疆域，声望每达到1000，家族会获得一个郡守职位，每年俸禄两千石</p>
+                            <p><span class="font-bold text-secondary">西域特殊：</span>西域没有郡守，只有西域长史。获得西域长史职务就有了向西域各国开战权，打下的国家成为郡，可直接任命郡守，不受朝廷管辖，不受声望限制</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- 游戏信息页面 -->
-        <div id="game-info-page" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in pointer-events-none">
-            <div class="panel w-[80vw] max-w-sm md:max-w-md lg:max-w-lg animate-slide-up pointer-events-auto max-h-[85vh] overflow-y-auto scrollbar-thin">
-                <div class="flex justify-between items-center mb-4">
+        <div id="game-info-page" class="modal-page hidden fixed inset-0 flex items-center justify-center z-50 animate-fade-in">
+            <div class="panel w-[70vw] max-w-lg animate-slide-up pointer-events-auto max-h-[85vh] overflow-y-auto scrollbar-hidden" style="padding-top: 0;">
+                <div class="flex justify-between items-center mb-4 sticky top-0 left-[-2px] right-[-2px] bg-light z-10 px-4 pt-4 pb-2 border-b-2 border-secondary">
                     <h2 class="text-3xl font-bold text-primary">游戏信息</h2>
                     <button id="btn-back-from-game-info" class="btn-secondary">
                         <i class="fa fa-arrow-left"></i> 返回
                     </button>
                 </div>
                 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 pb-4">
                     <!-- 左侧：基本信息 -->
                     <div>
                         <h3 class="text-xl font-bold mb-2">基本信息</h3>
@@ -3184,6 +3403,15 @@
                     break;
                 case 'game-main-page':
                     updateGameMainPage();
+                    // 重置信息窗口状态，避免布局混乱
+                    const expandedWindow = document.getElementById('info-window-expanded');
+                    const toggleIcon = document.querySelector('#toggle-info-window i');
+                    const gameMainPage = document.getElementById('game-main-page');
+                    if (expandedWindow && !expandedWindow.classList.contains('hidden')) {
+                        expandedWindow.classList.add('hidden');
+                        if (toggleIcon) toggleIcon.className = 'fa fa-chevron-down';
+                        if (gameMainPage) gameMainPage.classList.remove('info-expanded');
+                    }
                     break;
                 case 'farmland-page':
                     updateFarmlandPage();
@@ -3635,7 +3863,7 @@
             // 更新农田管事列表
             const farmManagerList = document.getElementById('farm-manager-list');
             const currentMonth = gameState.gameTime.month;
-            const canDismiss = currentMonth < 2 || currentMonth > 9;
+            const canDismiss = true; // 随时可以免职
             
             if (farmManagerCount === 0) {
                 farmManagerList.innerHTML = '<p class="text-gray-600 text-sm">暂无农田管事</p>';
@@ -3804,17 +4032,24 @@
                                         <p class="text-sm text-gray-600">农田: ${farmland} / ${county.farmland} 亩</p>
                                     </div>
                                     <div class="mt-2">
+                                        <!-- 第一行：标签、滑动条、数值 -->
                                         <div class="flex items-center gap-2 mb-2">
                                             <span class="text-sm">出售数量:</span>
-                                            <button id="cf-sell-minus1-${stateId}-${county.name}" class="btn-secondary text-sm w-8">-1</button>
-                                            <button id="cf-sell-minus10-${stateId}-${county.name}" class="btn-secondary text-sm w-10">-10</button>
                                             <input type="range" id="farmland-sell-slider-${stateId}-${county.name}" min="1" max="${farmland}" value="1" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                            <button id="cf-sell-plus10-${stateId}-${county.name}" class="btn-secondary text-sm w-10">+10</button>
-                                            <button id="cf-sell-plus1-${stateId}-${county.name}" class="btn-secondary text-sm w-8">+1</button>
                                             <span id="farmland-sell-value-${stateId}-${county.name}" class="font-bold w-12 text-right">1 亩</span>
                                         </div>
+                                        <!-- 第二行：+1/-1 -->
+                                        <div class="flex justify-center items-center gap-4 mb-2">
+                                            <button id="cf-sell-minus1-${stateId}-${county.name}" class="btn-adjust">-1</button>
+                                            <button id="cf-sell-plus1-${stateId}-${county.name}" class="btn-adjust">+1</button>
+                                        </div>
+                                        <!-- 第三行：+10/-10 -->
+                                        <div class="flex justify-center items-center gap-4 mb-2">
+                                            <button id="cf-sell-minus10-${stateId}-${county.name}" class="btn-adjust">-10</button>
+                                            <button id="cf-sell-plus10-${stateId}-${county.name}" class="btn-adjust">+10</button>
+                                        </div>
                                         <p class="text-sm text-gray-600 mb-2">预计获得: <span id="farmland-sell-earn-${stateId}-${county.name}" class="font-bold">50</span> 两</p>
-                                        <button id="cf-sell-btn-${stateId}-${county.name}" class="btn-secondary text-sm py-1 px-2">
+                                        <button id="cf-sell-btn-${stateId}-${county.name}" class="btn-secondary text-sm py-1 px-2 w-full">
                                             确认出售
                                         </button>
                                     </div>
@@ -6255,12 +6490,13 @@
             
             // 冲阵斩将规则：武力>=90时触发（取统领和副统领的最大值）
             let actualEnemyForce = enemyForce;
+            let chargeMsg = '';
             const effectiveForce = getEffectiveCommanderForce();
             if (effectiveForce >= 90) {
                 const chargeChance = (effectiveForce - 90) * 0.1;
                 if (Math.random() < chargeChance) {
                     actualEnemyForce = Math.floor(enemyForce * 0.7);
-                    showNotification('统领冲阵斩将！敌方减员30%！');
+                    chargeMsg = '统领冲阵斩将！敌方减员30%！';
                 }
             }
             
@@ -6287,13 +6523,14 @@
             // 基础胜率加上各项加成
             let winRate = baseWinRate + powerBonus + moraleBonus + leadershipBonus;
             
+            let reinforceMsg = '';
             if (regionData.paidTax) {
                 // 7.3 求援机制
                 const courtFavor = regionData.courtFavor || 0;
                 if (Math.random() * 100 < courtFavor) {
                     // 援军到来，胜率+50%
                     winRate += 0.5;
-                    showNotification('朝廷援军到来！胜率大幅提升！');
+                    reinforceMsg = '朝廷援军到来！胜率大幅提升！';
                 }
             }
             
@@ -6304,11 +6541,16 @@
             
             if (isWin) {
                 // 胜利
-                showNotification('成功击退部族进攻！');
+                let resultMsg = chargeMsg ? chargeMsg + '\n' : '';
+                resultMsg += reinforceMsg ? reinforceMsg + '\n' : '';
+                resultMsg += '成功击退部族进攻！';
+                
                 // 降低来攻部族好感度
                 attackers.forEach(tribe => {
                     tribe.favor = Math.max(0, tribe.favor - 20);
                 });
+                
+                showResultModal('部族战斗结果', resultMsg);
             } else {
                 // 失败后果
                 const farmlandLoss = Math.floor(regionData.farmland * 0.2);
@@ -6319,7 +6561,11 @@
                 gameState.family.food = Math.max(0, gameState.family.food - foodLoss);
                 gameState.servants.count = Math.max(0, gameState.servants.count - servantLoss);
                 
-                showNotification('抵御失败！损失农田' + farmlandLoss + '亩，粮草' + (foodLoss / 80).toFixed(0) + '石，仆从' + servantLoss + '人');
+                let resultMsg = chargeMsg ? chargeMsg + '\n' : '';
+                resultMsg += reinforceMsg ? reinforceMsg + '\n' : '';
+                resultMsg += `抵御失败！损失农田${farmlandLoss}亩、粮食${Math.floor(foodLoss/80)}石、仆从${servantLoss}人`;
+                
+                showResultModal('部族战斗结果', resultMsg);
             }
         }
 
@@ -6691,7 +6937,8 @@
                 const side0MaxFood = Math.max(0, 100 - event.sides[0].defaultWinRate);
                 const side1MaxSoldiers = Math.max(0, 100 - event.sides[1].defaultWinRate) * 1000;
                 const side1MaxFood = Math.max(0, 100 - event.sides[1].defaultWinRate);
-                const maxHorses = 10000; // 100匹马+1幸运值，上限100需要10000
+                // 战马上限由现有马匹数量决定，战马就是马匹
+                const maxHorses = gameState.industry.ranch.horses || 0;
                 
                 html += `
                     <div class="bg-light rounded-lg p-4 border border-secondary">
@@ -6994,7 +7241,7 @@
                     const heirloomDataInfo = heirloomData[heirloom];
                     msg += `获得传家宝：${heirloomDataInfo.name}（${getGradeName(heirloomDataInfo.tier)}）`;
                 }
-                showNotification(msg);
+                showResultModal('历史事件结果', msg);
                 
             } else {
                 // 失败惩罚
@@ -7007,7 +7254,7 @@
                     msg += `私兵${soldiersToSend}人全部战死\n`;
                 }
                 msg += `声望-${reputationLoss}`;
-                showNotification(msg);
+                showResultModal('历史事件结果', msg);
             }
             
             // 记录参与历史
@@ -7205,7 +7452,7 @@
         }
 
         // 任命农田管事
-        function appointFarmManager(memberIndex) {
+        function appointFarmManager(member) {
             if (gameState.gameTime.month !== 2) {
                 showNotification('只能在每年2月任命农田管事');
                 return;
@@ -7214,41 +7461,26 @@
                 showNotification('农田管事人数已达上限（4人）');
                 return;
             }
-            
-            let member;
-            if (memberIndex === 0) {
-                member = { name: gameState.player.name, role: '家主', farmingAbility: gameState.player.abilities.farming || 0 };
-            } else {
-                member = gameState.familyHouse.members[memberIndex - 1];
-                if (member) {
-                    member = { name: member.name, role: member.role || '家族成员', farmingAbility: member.farmingAbility || member.abilities?.farming || 0 };
-                }
-            }
+
             if (!member) return;
-            
+
             const currentPosition = getMemberPosition(member.name);
             if (currentPosition) {
                 showNotification(`${member.name} 已在任 ${currentPosition}，无法兼任`);
                 return;
             }
-            
+
             gameState.farmland.farmManagers.push({
                 name: member.name,
                 farmingAbility: member.farmingAbility
             });
-            
+
             showNotification(`已任命 ${member.name} 为农田管事，农艺值: ${member.farmingAbility}`);
             updateFarmlandPage();
         }
 
         // 免去农田管事
         function dismissFarmManager(index) {
-            const currentMonth = gameState.gameTime.month;
-            if (currentMonth >= 2 && currentMonth <= 9) {
-                showNotification('2月至9月期间不能免去农田管事');
-                return;
-            }
-            
             if (index < 0 || index >= gameState.farmland.farmManagers.length) return;
             
             const managerName = gameState.farmland.farmManagers[index].name;
@@ -7263,16 +7495,16 @@
             if (memberIndex === 0) {
                 member = { name: gameState.player.name, role: '家主' };
             } else {
-                member = gameState.familyHouse.members[memberIndex - 1];
+                member = gameState.familyHouse.members[memberIndex];
             }
             if (!member) return;
-            
+
             const currentPosition = getMemberPosition(member.name);
             if (currentPosition) {
                 showNotification(`${member.name} 已在任 ${currentPosition}，无法兼任`);
                 return;
             }
-            
+
             gameState.industry.selectedManager = member.name;
             showNotification(`已选择 ${member.name} 为商队管事，点击"创建商队"任命`);
             updateCaravanPage();
@@ -7845,16 +8077,20 @@
                                 <span class="font-bold">${goodsNames[key]}</span>
                                 <span class="text-sm text-gray-600">仓库: ${warehouseCount} | 商队: ${caravanCount}</span>
                             </div>
-                            <div class="flex items-center gap-3">
-                                <button onclick="adjustCargo('${key}', -1, ${sliderMax})" class="btn-secondary w-10 h-10 text-lg">-</button>
+                            <!-- 第一行：滑动条 -->
+                            <div class="mb-2">
                                 <input type="range" id="cargo-slider-${key}" min="0" max="${sliderMax}" value="${currentValue}"
-                                       class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                                <button onclick="adjustCargo('${key}', 1, ${sliderMax})" class="btn-secondary w-10 h-10 text-lg">+</button>
-                                <span id="cargo-value-${key}" class="font-bold w-16 text-right">${currentValue}</span>
+                                       class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
                             </div>
-                            <div class="flex justify-between mt-2 text-sm text-gray-600">
-                                <span>← 移回仓库</span>
-                                <span>放入商队 →</span>
+                            <!-- 第二行：+/-1按钮 -->
+                            <div class="flex justify-center items-center gap-4 mb-2">
+                                <button onclick="adjustCargo('${key}', -1, ${sliderMax})" class="btn-adjust">-1</button>
+                                <button onclick="adjustCargo('${key}', 1, ${sliderMax})" class="btn-adjust">+1</button>
+                            </div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-gray-600">← 移回仓库</span>
+                                <span id="cargo-value-${key}" class="font-bold">${currentValue}</span>
+                                <span class="text-sm text-gray-600">放入商队 →</span>
                             </div>
                         </div>
                     `;
@@ -8173,14 +8409,18 @@
                         <span class="font-bold text-red-600">购买</span>
                         <span class="text-sm">单价: <span class="font-bold">${localBuyPrice}</span>文</span>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="adjustTradeAmount('buy', -1, ${buyMax})" class="btn-secondary w-10 h-10 text-lg">-</button>
+                    <!-- 第一行：滑动条 -->
+                    <div class="mb-2">
                         <input type="range" id="trade-buy-slider" min="0" max="${buyMax}" value="0"
-                               class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                        <button onclick="adjustTradeAmount('buy', 1, ${buyMax})" class="btn-secondary w-10 h-10 text-lg">+</button>
-                        <span id="trade-buy-value" class="font-bold w-16 text-right">0</span>
+                               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
                     </div>
-                    <p id="trade-buy-total" class="text-sm text-gray-600 mt-2">总价: 0文</p>
+                    <!-- 第二行：+/-1按钮 -->
+                    <div class="flex justify-center items-center gap-4 mb-2">
+                        <button onclick="adjustTradeAmount('buy', -1, ${buyMax})" class="btn-adjust">-1</button>
+                        <button onclick="adjustTradeAmount('buy', 1, ${buyMax})" class="btn-adjust">+1</button>
+                    </div>
+                    <p id="trade-buy-value" class="text-center font-bold mb-2">购买数量: <span id="trade-buy-count">0</span></p>
+                    <p id="trade-buy-total" class="text-sm text-gray-600">总价: <span id="trade-buy-price">0</span>文</p>
                 </div>
                 
                 <!-- 出售区域 -->
@@ -8189,14 +8429,18 @@
                         <span class="font-bold text-green-600">出售</span>
                         <span class="text-sm">单价: <span class="font-bold">${localSellPrice}</span>文</span>
                     </div>
-                    <div class="flex items-center gap-3">
-                        <button onclick="adjustTradeAmount('sell', -1, ${sellMax})" class="btn-secondary w-10 h-10 text-lg">-</button>
+                    <!-- 第一行：滑动条 -->
+                    <div class="mb-2">
                         <input type="range" id="trade-sell-slider" min="0" max="${sellMax}" value="0"
-                               class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
-                        <button onclick="adjustTradeAmount('sell', 1, ${sellMax})" class="btn-secondary w-10 h-10 text-lg">+</button>
-                        <span id="trade-sell-value" class="font-bold w-16 text-right">0</span>
+                               class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
                     </div>
-                    <p id="trade-sell-total" class="text-sm text-gray-600 mt-2">总价: 0文</p>
+                    <!-- 第二行：+/-1按钮 -->
+                    <div class="flex justify-center items-center gap-4 mb-2">
+                        <button onclick="adjustTradeAmount('sell', -1, ${sellMax})" class="btn-adjust">-1</button>
+                        <button onclick="adjustTradeAmount('sell', 1, ${sellMax})" class="btn-adjust">+1</button>
+                    </div>
+                    <p id="trade-sell-value" class="text-center font-bold mb-2">出售数量: <span id="trade-sell-count">0</span></p>
+                    <p id="trade-sell-total" class="text-sm text-gray-600">总价: <span id="trade-sell-price">0</span>文</p>
                 </div>
             `;
             
@@ -8206,14 +8450,14 @@
             
             buySlider.addEventListener('input', function() {
                 const value = parseInt(this.value) || 0;
-                document.getElementById('trade-buy-value').textContent = value;
-                document.getElementById('trade-buy-total').textContent = `总价: ${value * localBuyPrice}文`;
+                document.getElementById('trade-buy-count').textContent = value;
+                document.getElementById('trade-buy-price').textContent = value * localBuyPrice;
             });
-            
+
             sellSlider.addEventListener('input', function() {
                 const value = parseInt(this.value) || 0;
-                document.getElementById('trade-sell-value').textContent = value;
-                document.getElementById('trade-sell-total').textContent = `总价: ${value * localSellPrice}文`;
+                document.getElementById('trade-sell-count').textContent = value;
+                document.getElementById('trade-sell-price').textContent = value * localSellPrice;
             });
             
             modal.classList.remove('hidden');
@@ -8223,15 +8467,15 @@
         function adjustTradeAmount(type, delta, maxValue) {
             const slider = document.getElementById(`trade-${type}-slider`);
             if (!slider) return;
-            
+
             const currentValue = parseInt(slider.value) || 0;
             let newValue = currentValue + delta;
             newValue = Math.max(0, Math.min(maxValue, newValue));
             slider.value = newValue;
-            
+
             // 更新显示
-            document.getElementById(`trade-${type}-value`).textContent = newValue;
-            
+            document.getElementById(`trade-${type}-count`).textContent = newValue;
+
             // 更新总价
             const caravan = gameState.industry.caravans[selectedCaravanMarketIndex];
             if (caravan) {
@@ -8240,11 +8484,11 @@
                 const basePrices = gameState.industry.goodsPrices || {};
                 const basePrice = basePrices[selectedTradeGoodKey] || { buy: 0, sell: 0 };
                 const isSpecialty = regionSpecialties.includes(selectedTradeGoodKey);
-                
-                let price = type === 'buy' ? basePrice.buy : 
+
+                let price = type === 'buy' ? basePrice.buy :
                            (isSpecialty ? Math.floor(basePrice.sell * 0.5) : Math.floor(basePrice.sell * 1.5));
-                
-                document.getElementById(`trade-${type}-total`).textContent = `总价: ${newValue * price}文`;
+
+                document.getElementById(`trade-${type}-price`).textContent = newValue * price;
             }
         }
         
@@ -9237,14 +9481,21 @@
                 <div class="bg-light rounded-lg p-4 border border-secondary">
                     <p class="mb-2">可购买奴隶数量: <span class="font-bold">${maxSlaves}</span> 人</p>
                     <p class="mb-2">价格: <span class="font-bold">${pricePerSlave}文</span> / 人</p>
-                    <div class="flex items-center gap-2 mb-3">
+                    <!-- 第一行：标签、滑动条、数值 -->
+                    <div class="flex items-center gap-2 mb-2">
                         <span class="text-sm">购买数量:</span>
-                        <button onclick="adjustSlaveCount(-1)" class="btn-secondary text-sm w-8">-1</button>
-                        <button onclick="adjustSlaveCount(-10)" class="btn-secondary text-sm w-10">-10</button>
                         <input type="range" id="slaves-slider" min="1" max="${maxSlaves}" value="1" class="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" oninput="updateSlaveDisplay()">
-                        <button onclick="adjustSlaveCount(10)" class="btn-secondary text-sm w-10">+10</button>
-                        <button onclick="adjustSlaveCount(1)" class="btn-secondary text-sm w-8">+1</button>
                         <span id="slaves-value" class="font-bold w-10 text-right">1</span>
+                    </div>
+                    <!-- 第二行：+1/-1 -->
+                    <div class="flex justify-center items-center gap-4 mb-2">
+                        <button onclick="adjustSlaveCount(-1)" class="btn-adjust">-1</button>
+                        <button onclick="adjustSlaveCount(1)" class="btn-adjust">+1</button>
+                    </div>
+                    <!-- 第三行：+10/-10 -->
+                    <div class="flex justify-center items-center gap-4 mb-3">
+                        <button onclick="adjustSlaveCount(-10)" class="btn-adjust">-10</button>
+                        <button onclick="adjustSlaveCount(10)" class="btn-adjust">+10</button>
                     </div>
                     <p id="slaves-total-cost" class="text-sm mb-3">总计: ${pricePerSlave}文</p>
                     <button onclick="confirmBuySlaves()" class="btn-game text-sm py-1 px-4 w-full">
@@ -9665,12 +9916,13 @@
             
             // 冲阵斩将规则：武力>=90时触发（取统领和副统领的最大值）
             let actualBanditCount = banditCount;
+            let chargeMsg = '';
             const effectiveForce = getEffectiveCommanderForce();
             if (effectiveForce >= 90) {
                 const chargeChance = (effectiveForce - 90) * 0.1;
                 if (Math.random() < chargeChance) {
                     actualBanditCount = Math.floor(banditCount * 0.7);
-                    showNotification('统领冲阵斩将！敌方减员30%！');
+                    chargeMsg = '统领冲阵斩将！敌方减员30%！';
                 }
             }
             
@@ -9718,7 +9970,10 @@
                 gameState.family.food += foodGain;
                 gameState.family.money += moneyGain;
                 
-                showNotification(`剿灭成功！获得粮草${foodGain}石，银两${moneyGain}文！`);
+                let resultMsg = chargeMsg ? chargeMsg + '\n\n' : '';
+                resultMsg += `剿灭成功！\n获得${foodGain}石粮食、${moneyGain}文钱`;
+                
+                showResultModal('流寇事件结果', resultMsg);
             } else {
                 // 剿灭失败
                 // 流寇人数×2的人口从当前总人口中扣除，这些人数转入流寇人数
@@ -9735,7 +9990,10 @@
                 // 私兵士气降低30点
                 gameState.privateSoldiers.morale = Math.max(0, soldierMorale - 30);
                 
-                showNotification(`剿灭失败！私兵损失过半，粮草损失30%！`);
+                let resultMsg = chargeMsg ? chargeMsg + '\n\n' : '';
+                resultMsg += `剿灭失败！\n私兵损失过半\n粮食损失30%`;
+                
+                showResultModal('流寇事件结果', resultMsg);
             }
         }
         
@@ -12094,6 +12352,48 @@
             }
         }
 
+        // 显示结果弹窗（同时会显示在系统信息框）
+        function showResultModal(title, content) {
+            // 显示在弹窗
+            document.getElementById('result-modal-title').textContent = title;
+            document.getElementById('result-modal-content').textContent = content;
+            document.getElementById('result-modal').classList.remove('hidden');
+            
+            // 同时显示在系统信息框
+            showNotification(content);
+        }
+
+        // 关闭结果弹窗
+        function closeResultModal() {
+            document.getElementById('result-modal').classList.add('hidden');
+        }
+
+        // 更新配备甲胄显示
+        function updateEquipArmorDisplay() {
+            const value = document.getElementById('equip-armor-slider').value;
+            document.getElementById('equip-armor-value').textContent = value;
+        }
+
+        // 显示配备甲胄弹窗
+        function showEquipArmorModal() {
+            const ranch = gameState.industry.ranch;
+            const availableArmor = ranch.armor || 0;
+            const equippedArmor = ranch.equippedArmor || 0;
+            const maxEquip = availableArmor;
+            
+            document.getElementById('equip-armor-current-stock').textContent = availableArmor;
+            document.getElementById('equip-armor-current-equipped').textContent = equippedArmor;
+            document.getElementById('equip-armor-slider').max = maxEquip;
+            document.getElementById('equip-armor-slider').value = 0;
+            document.getElementById('equip-armor-value').textContent = 0;
+            document.getElementById('equip-armor-modal').classList.remove('hidden');
+        }
+
+        // 关闭配备甲胄弹窗
+        function closeEquipArmorModal() {
+            document.getElementById('equip-armor-modal').classList.add('hidden');
+        }
+
         // 游戏结束
         function showGameOver(message) {
             alert(message + '\n\n游戏结束！');
@@ -12167,12 +12467,13 @@
             const heirloomBonus = getHeirloomSpecialBonus('banditWinRate') || 0;
             
             // 冲阵斩将规则：武力>=90时触发（取统领和副统领的最大值）
+            let chargeMsg = '';
             const effectiveForce = getEffectiveCommanderForce();
             if (effectiveForce >= 90) {
                 const chargeChance = (effectiveForce - 90) * 0.1; // 武力90=10%, 91=20%, ..., 99=100%
                 if (Math.random() < chargeChance) {
                     B = Math.floor(B * 0.7); // 对方减员30%
-                    showNotification('统领冲阵斩将！敌方减员30%！');
+                    chargeMsg = '统领冲阵斩将！敌方减员30%！';
                 }
             }
             
@@ -12222,23 +12523,28 @@
                     brocade: '蜀锦', salt: '盐', jade: '玉石', cotton: '棉布', glass: '琉璃'
                 };
                 
+                let resultMsg = chargeMsg ? chargeMsg + '\n\n' : '';
+                resultMsg += `剿灭成功！\n`;
+                resultMsg += `获得${rewardMoney}两、${Math.floor(rewardFoodJin/80)}石粮食、${rewardReputation}声望、${specialtyAmount}个${goodNames[randomGood]}\n`;
+                resultMsg += `损失${soldierLoss}名私兵`;
+                
                 if (bandit.heirloomId) {
                     const heirloomData_entry = heirloomData[bandit.heirloomId];
                     if (heirloomData_entry) {
                         if (gameState.heirlooms.owned.includes(bandit.heirloomId)) {
                             const meritValue = { huang: 25, xuan: 50, di: 100, tian: 200 };
                             gameState.heirlooms.meritPoints += meritValue[heirloomData_entry.tier] || 100;
-                            showNotification(`获得重复传家宝，转化为${meritValue[heirloomData_entry.tier] || 100}功德值！`);
+                            resultMsg += `\n\n获得重复传家宝，转化为${meritValue[heirloomData_entry.tier] || 100}功德值！`;
                         } else {
                             gameState.heirlooms.owned.push(bandit.heirloomId);
                             applyHeirloomBonus(bandit.heirloomId);
-                            showNotification(`获得传家宝：${heirloomData_entry.name}！`);
+                            resultMsg += `\n\n获得传家宝：${heirloomData_entry.name}！`;
                         }
                     }
                 }
                 
                 bandits.splice(currentEliminateBanditIndex, 1);
-                showNotification(`剿灭成功！获得${rewardMoney}两、${Math.floor(rewardFoodJin/80)}石粮食、${rewardReputation}声望、${specialtyAmount}个${goodNames[randomGood]}！损失${soldierLoss}名私兵。`);
+                showResultModal('剿灭山贼', resultMsg);
             } else {
                 const soldierLossMin = Math.floor(P * 0.3);
                 const soldierLossMax = Math.floor(P * 0.5);
@@ -12251,7 +12557,12 @@
                 bandit.population = Math.max(0, bandit.population - banditLoss);
                 bandit.intimacy = 0;
                 
-                showNotification(`剿灭失败！损失${soldierLoss}名私兵，山贼剩余${bandit.population}人，亲密度归零。`);
+                let resultMsg = chargeMsg ? chargeMsg + '\n\n' : '';
+                resultMsg += `剿灭失败！\n`;
+                resultMsg += `损失${soldierLoss}名私兵\n`;
+                resultMsg += `山贼剩余${bandit.population}人，亲密度归零`;
+                
+                showResultModal('剿灭山贼', resultMsg);
             }
             
             currentEliminateBanditIndex = -1;
@@ -12779,6 +13090,15 @@
                 gameState.player.name = playerName;
                 gameState.player.birthplace = tradePlace; // 初始贸易地
                 gameState.player.birthState = birthState; // 出生地州
+                
+                // 开始播放背景音乐
+                setTimeout(() => {
+                    const audio = document.getElementById('game-music');
+                    if (audio && gameState.settings.musicEnabled) {
+                        audio.volume = gameState.settings.musicVolume / 100;
+                        audio.play().catch(e => console.log('背景音乐播放失败:', e));
+                    }
+                }, 500);
                 gameState.player.birthCounty = birthCounty; // 出生地郡
                 gameState.player.birthCity = birthCity; // 出生地城市
                 gameState.player.age = 18; // 初始年龄
@@ -12931,6 +13251,11 @@
                 hideInputModal();
             });
             
+            // 结果弹窗关闭按钮
+            document.getElementById('result-modal-close').addEventListener('click', function() {
+                closeResultModal();
+            });
+            
             // 游戏主体页面按钮
             document.getElementById('toggle-info-window').addEventListener('click', function() {
                 const expandedWindow = document.getElementById('info-window-expanded');
@@ -13018,15 +13343,15 @@
                     showNotification('农田管事人数已达上限（4人）');
                     return;
                 }
-                
+
                 const availableMembers = getAllFamilyMembers().filter(member => !getMemberPosition(member.name));
-                
+
                 showMemberSelectModal(
                     '任命农田管事',
                     '请选择一位家族成员担任农田管事。每10点农艺值增加1%粮食产量，最多任命4人。',
                     availableMembers,
                     function(member) {
-                        appointFarmManager(member.index);
+                        appointFarmManager(member);
                     },
                     { showStat: 'farming' }
                 );
@@ -13635,6 +13960,41 @@
                 );
             });
 
+            // 配备甲胄
+            document.getElementById('btn-equip-armor-manor').addEventListener('click', function() {
+                showEquipArmorModal();
+            });
+
+            // 配备甲胄确认
+            document.getElementById('equip-armor-confirm').addEventListener('click', function() {
+                const ranch = gameState.industry.ranch;
+                const count = parseInt(document.getElementById('equip-armor-slider').value) || 0;
+                
+                if (count <= 0) {
+                    showNotification('请选择要配备的甲胄数量');
+                    return;
+                }
+                
+                if (count > ranch.armor) {
+                    showNotification('甲胄数量不足');
+                    return;
+                }
+                
+                ranch.armor -= count;
+                ranch.equippedArmor = (ranch.equippedArmor || 0) + count;
+                
+                showNotification(`已配备 ${count} 副甲胄`);
+                
+                closeEquipArmorModal();
+                updateManorPage();
+                updateRanchPage();
+            });
+
+            // 配备甲胄取消
+            document.getElementById('equip-armor-cancel').addEventListener('click', function() {
+                closeEquipArmorModal();
+            });
+
             document.getElementById('btn-plow').addEventListener('click', function() {
                 if (gameState.gameTime.month === 2) {
                     gameState.farmland.status = "planted";
@@ -14121,6 +14481,23 @@
             document.getElementById('music-volume').addEventListener('input', function() {
                 gameState.settings.musicVolume = parseInt(this.value);
                 document.getElementById('music-volume-value').textContent = `${this.value}%`;
+                const audio = document.getElementById('game-music');
+                if (audio) {
+                    audio.volume = gameState.settings.musicVolume / 100;
+                }
+            });
+            
+            // 音乐开关控制
+            document.getElementById('music-toggle').addEventListener('change', function() {
+                gameState.settings.musicEnabled = this.checked;
+                const audio = document.getElementById('game-music');
+                if (audio) {
+                    if (gameState.settings.musicEnabled) {
+                        audio.play().catch(e => console.log('音乐播放失败:', e));
+                    } else {
+                        audio.pause();
+                    }
+                }
             });
             
             document.getElementById('sound-volume').addEventListener('input', function() {
@@ -14146,6 +14523,16 @@
             // 称号页面按钮
             document.getElementById('btn-back-from-titles').addEventListener('click', function() {
                 document.getElementById('titles-page').classList.add('hidden');
+                showPage('game-main-page');
+            });
+            
+            // 说明页面按钮
+            document.getElementById('btn-guide').addEventListener('click', function() {
+                document.getElementById('guide-page').classList.remove('hidden');
+            });
+            
+            document.getElementById('btn-back-from-guide').addEventListener('click', function() {
+                document.getElementById('guide-page').classList.add('hidden');
                 showPage('game-main-page');
             });
             
@@ -14266,6 +14653,7 @@
                     gender: member.gender || 'male',
                     spouse: member.spouse || null,
                     index: i + 1,
+                    originalIndex: gameState.familyHouse.members.indexOf(member),
                     isPlayer: false,
                     attributes: member.attributes || {},
                     abilities: member.abilities || {},
@@ -14439,7 +14827,7 @@
     </script>
     
     <!-- 家族成员选择模态框 -->
-    <div id="member-select-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="member-select-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="member-select-title">选择家族成员</h3>
@@ -14457,7 +14845,7 @@
     </div>
     
     <!-- 角色信息面板 -->
-    <div id="character-info-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="character-info-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="char-info-name">角色信息</h3>
@@ -14471,7 +14859,7 @@
     </div>
     
     <!-- 求学信息面板 -->
-    <div id="student-info-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="student-info-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-xl animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold">求学信息</h3>
@@ -14485,7 +14873,7 @@
     </div>
     
     <!-- 设置目的地面板 -->
-    <div id="destination-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="destination-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-2xl animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold">选择目的地</h3>
@@ -14499,7 +14887,7 @@
     </div>
     
     <!-- 农田分布面板 -->
-    <div id="farmland-distribution-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="farmland-distribution-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="farmland-distribution-title">农田分布</h3>
@@ -14513,7 +14901,7 @@
     </div>
     
     <!-- 太守任命面板 -->
-    <div id="governor-appoint-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="governor-appoint-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="governor-appoint-title">太守任命</h3>
@@ -14527,7 +14915,7 @@
     </div>
     
     <!-- 商队资金调整面板 -->
-    <div id="caravan-money-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="caravan-money-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="caravan-money-title">调整商队资金</h3>
@@ -14541,7 +14929,7 @@
     </div>
     
     <!-- 派遣仆从/备马面板 -->
-    <div id="caravan-staff-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="caravan-staff-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="caravan-staff-title">派遣仆从/备马</h3>
@@ -14555,7 +14943,7 @@
     </div>
     
     <!-- 招募/遣散面板 -->
-    <div id="recruit-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="recruit-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="recruit-title">招募/遣散</h3>
@@ -14569,7 +14957,7 @@
     </div>
     
     <!-- 购买奴隶面板 -->
-    <div id="buy-slaves-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="buy-slaves-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="buy-slaves-title">购买奴隶</h3>
@@ -14583,7 +14971,7 @@
     </div>
     
     <!-- 商队仓库管理面板 -->
-    <div id="caravan-warehouse-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="caravan-warehouse-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-2xl animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="caravan-warehouse-title">商队仓库管理</h3>
@@ -14600,7 +14988,7 @@
     </div>
     
     <!-- 商队货栈交易面板 -->
-    <div id="caravan-market-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="caravan-market-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-2xl animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="caravan-market-title">货栈交易</h3>
@@ -14617,7 +15005,7 @@
     </div>
     
     <!-- 商品交易详情面板 -->
-    <div id="goods-trade-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div id="goods-trade-modal" class="fixed inset-0 flex items-center justify-center z-50 hidden">
         <div class="panel max-w-lg animate-slide-up">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold" id="goods-trade-title">商品交易</h3>
