@@ -40,15 +40,21 @@
                         },
                     },
                     backgroundImage: {
-                        'scroll-pattern': "url('https://aka.doubaocdn.com/s/XxUW1wQ4K8')",
-                        'liaodong': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/41870b50eb9c4c8babdc8c4e8757c468~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978602&x-signature=6qhtDD0aWoEqKwgaBW396XkI7N0%3D')",
-                        'monan': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/410fd74530c84922968bdf32dab6e3ff~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978585&x-signature=svim6n87XFHXo%2B3330wYTKD6lGw%3D')",
-                        'zhongyuan': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/0ff2e354135c48b8af7b0f3241bfe5d7~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978585&x-signature=AocQe%2FrchtDGSpKWGjkQgcljpK0%3D')",
-                        'jiangnan': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/488a6ff71f65418db5b22be4c93471f3~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978587&x-signature=nSBfGpgzd9%2FJwsso%2BcTE7r0TFSo%3D')",
-                        'lingnan': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/36f2cf80f74941f3b2ad2b78f741597f~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978648&x-signature=EimNamKFX4eQH9kB%2BloGjnSeEIs%3D')",
-                        'bashu': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/3b7cd4284fa34faa8f8921bce2ae0c8f~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978629&x-signature=GJtfponzmy%2FCp2MakvzGVRrMvfE%3D')",
-                        'guanzhong': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/9f218eb5477546d2ac8c9c64d21d05a4~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978630&x-signature=zWFE9JfkiJSR%2BNoJJczq%2BKCc3Ug%3D')",
-                        'xiyu': "url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/e7c108cc86ec4896bbe22ab00d242e1c~tplv-a9rns2rl98-image.image?lk3s=8e244e95&rcl=2026051012145921FDB378AA98E9C27EB2&rrcfp=f06b921b&x-expires=1780978628&x-signature=AghIGRHRljR4qMbTLjXO7Dn35oI%3D')",
+                        'scroll-pattern': "url('images/zhutu.png')",
+                        'liangzhou': "url('images/liangzhou.png')",
+                        'binzhou': "url('images/binzhou.png')",
+                        'youzhou': "url('images/youzhou.png')",
+                        'jizhou': "url('images/jizhou.png')",
+                        'qingzhou': "url('images/qingzhou.png')",
+                        'yanzhou': "url('images/yanzhou.png')",
+                        'yuzhou': "url('images/yuzhou.png')",
+                        'xuzhou': "url('images/xuzhou.png')",
+                        'yangzhou': "url('images/yangzhou.png')",
+                        'jinzhou': "url('images/jinzhou.png')",
+                        'yizhou': "url('images/yizhou.png')",
+                        'jingzhao': "url('images/jingzhao.png')",
+                        'jiaozhou': "url('images/jiaozhou.png')",
+                        'xiyu': "url('images/xiyu.png')",
                     }
                 }
             }
@@ -113,8 +119,8 @@
 <body class="font-serif bg-scroll-pattern bg-cover bg-fixed bg-center min-h-screen">
     <!-- 背景音乐 -->
     <audio id="game-music" loop preload="auto">
-        <source src="http://bbs.009y.com/UploadFile/2006-10/20061019132556502.mp3" type="audio/mpeg">
-    </audio></audio>
+        <source src="bg-music.mp3" type="audio/mpeg">
+    </audio>
     
     <!-- 游戏容器 -->
     <div id="game-container" class="relative w-full min-h-screen overflow-hidden">
@@ -129,23 +135,23 @@
             </div>
             
             <div class="flex flex-col gap-4 w-64">
-                <button id="btn-game-intro" class="btn-game flex items-center justify-center gap-2">
-                    <i class="fa fa-book"></i> 游戏背景介绍
+                <button id="btn-game-intro" class="btn-game">
+                    游戏背景介绍
                 </button>
-                <button id="btn-start-game" class="btn-game flex items-center justify-center gap-2">
-                    <i class="fa fa-play"></i> 开始游戏
+                <button id="btn-start-game" class="btn-game">
+                    开始游戏
                 </button>
-                <button id="btn-load-game" class="btn-game flex items-center justify-center gap-2">
-                    <i class="fa fa-book"></i> 加载存档
+                <button id="btn-load-game" class="btn-game">
+                    加载存档
                 </button>
-                <button id="btn-settings" class="btn-game flex items-center justify-center gap-2">
-                    <i class="fa fa-pencil"></i> 设置
+                <button id="btn-settings" class="btn-game">
+                    设置
                 </button>
-                <button id="btn-treasures" class="btn-game flex items-center justify-center gap-2">
-                    <i class="fa fa-gem"></i> 传家宝
+                <button id="btn-treasures" class="btn-game">
+                    传家宝
                 </button>
-                <button id="btn-exit-game" class="btn-game flex items-center justify-center gap-2 bg-red-600">
-                    <i class="fa fa-door-open"></i> 离开游戏
+                <button id="btn-exit-game" class="btn-game bg-red-600">
+                    离开游戏
                 </button>
             </div>
         </div>
@@ -2001,8 +2007,8 @@
             family: {
                 members: [],
                 reputation: 1000, // 测试：初始声望1000
-                money: 10000000000, // 1000万两 = 10000000000文
-                food: 800000000, // 1000万石 = 800000000斤 (1石=80斤)
+                money: 100000, // 100两 = 100000文
+                food: 24000, // 300石 = 24000斤 (1石=80斤)
                 land: 10,
                 // 私有郡数据
                 privateCounties: [], // { stateId, countyName, farmland } 玩家拥有的郡
@@ -2027,11 +2033,11 @@
                 farmManagers: []
             },
             privateSoldiers: {
-                count: 30000, // 测试：初始私兵30000
+                count: 0, // 初始私兵0
                 commander: "暂无",
                 commanderForce: 0,
-                morale: 100, // 测试：初始士气100
-                power: 100   // 测试：初始战力100
+                morale: 50, // 初始士气50
+                power: 0   // 初始战力0
             },
             servants: {
                 count: 100, // 测试：初始空闲仆人100
@@ -10753,6 +10759,52 @@
             'yizhou': ['zhongnan', 'plateau']  // 益州 -> 中南半岛、高原地区
         };
 
+        // 出生地州与背景图的映射关系（州ID -> 背景图类名）
+        const stateBackgroundMap = {
+            'liangzhou': 'liangzhou',      // 凉州
+            'bingzhou': 'binzhou',         // 并州
+            'youzhou': 'youzhou',          // 幽州
+            'ji': 'jizhou',               // 冀州
+            'qingzhou': 'qingzhou',        // 青州
+            'yanzhou': 'yanzhou',          // 兖州
+            'yuzhou': 'yuzhou',           // 豫州
+            'xuzhou': 'xuzhou',           // 徐州
+            'yangzhou': 'yangzhou',        // 扬州
+            'jingzhou': 'jinzhou',         // 荆州
+            'yizhou': 'yizhou',           // 益州
+            'sili': 'jingzhao',           // 司隶校尉部
+            'jiaozhou': 'jiaozhou',        // 交州
+            'xiyu': 'xiyu'                // 西域长史府
+        };
+
+        // 根据州设置body的背景图
+        function setBirthplaceBackground(stateId) {
+            const backgroundClass = stateBackgroundMap[stateId] || 'scroll-pattern';
+            const bodyElement = document.body;
+            
+            if (bodyElement) {
+                // 移除所有可能的背景图类
+                bodyElement.classList.remove('bg-scroll-pattern');
+                bodyElement.classList.remove('bg-liangzhou');
+                bodyElement.classList.remove('bg-binzhou');
+                bodyElement.classList.remove('bg-youzhou');
+                bodyElement.classList.remove('bg-jizhou');
+                bodyElement.classList.remove('bg-qingzhou');
+                bodyElement.classList.remove('bg-yanzhou');
+                bodyElement.classList.remove('bg-yuzhou');
+                bodyElement.classList.remove('bg-xuzhou');
+                bodyElement.classList.remove('bg-yangzhou');
+                bodyElement.classList.remove('bg-jinzhou');
+                bodyElement.classList.remove('bg-yizhou');
+                bodyElement.classList.remove('bg-jingzhao');
+                bodyElement.classList.remove('bg-jiaozhou');
+                bodyElement.classList.remove('bg-xiyu');
+                
+                // 添加当前州的背景图类
+                bodyElement.classList.add('bg-' + backgroundClass);
+            }
+        }
+
         const heirloomData = {
             // 四维属性-体质
             'huangjingfulingwan': { name: '黄精茯苓丸', category: 'vitality', tier: 'huang', attr: 'vitality', attrBonus: 1, special: { type: 'longevity', value: 1 }, special2: null },
@@ -12309,6 +12361,9 @@
                     warhorse: { buy: 500, sell: 400 }
                 };
                 
+                // 根据出生地设置游戏页面背景图
+                setBirthplaceBackground(gameState.player.birthState);
+                
                 showPage('game-main-page');
                 updateGameMainPage();
                 showNotification(`已加载存档位${slot === 0 ? '（自动存档）' : slot}`);
@@ -13213,6 +13268,9 @@
                         abilities: memberStats.abilities
                     });
                 }
+                
+                // 根据出生地设置游戏页面背景图
+                setBirthplaceBackground(gameState.player.birthState);
                 
                 showPage('game-main-page');
             });
